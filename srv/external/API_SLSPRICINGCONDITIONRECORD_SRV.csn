@@ -1,0 +1,65 @@
+{
+ "meta": {
+  "creator": "cds-dk 9.6.0"
+ },
+ "$version": "2.0",
+ "definitions": {
+  "API_SLSPRICINGCONDITIONRECORD_SRV": {
+   "kind": "service",
+   "@cds.external": true,
+   "@m.IsDefaultEntityContainer": "true"
+  },
+  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecord": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "elements": {
+    "ConditionRecord": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "notNull": true
+    },
+    "ConditionSequentialNumber": {
+     "key": true,
+     "type": "cds.String",
+     "length": 2,
+     "notNull": true
+    },
+    "ConditionTable": {
+     "type": "cds.String",
+     "length": 3
+    },
+    "ConditionType": {
+     "type": "cds.String",
+     "length": 4
+    },
+    "ConditionValidityStartDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date"
+    },
+    "ConditionValidityEndDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date"
+    },
+    "ConditionRateValue": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9
+    },
+    "ConditionRateValueUnit": {
+     "type": "cds.String",
+     "length": 5
+    },
+    "WorkAgreement": {
+     "type": "cds.String",
+     "length": 10
+    },
+    "Customer": {
+     "type": "cds.String",
+     "length": 10
+    }
+   }
+  }
+ }
+}

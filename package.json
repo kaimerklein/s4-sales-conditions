@@ -6,7 +6,10 @@
   "dependencies": {
     "@cap-js/hana": "2.6.0",
     "@sap/cds": "9.7.1",
-    "express": "5.2.1"
+    "express": "5.2.1",
+    "@sap-cloud-sdk/connectivity": "^4",
+    "@sap-cloud-sdk/http-client": "^4",
+    "@sap-cloud-sdk/resilience": "^4"
   },
   "devDependencies": {
     "@cap-js/cds-test": "^0.4.1",
@@ -22,6 +25,10 @@
       "db": "hana",
       "[development]": {
         "db": "sqlite"
+      },
+      "API_SLSPRICINGCONDITIONRECORD_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_SLSPRICINGCONDITIONRECORD_SRV"
       }
     }
   },

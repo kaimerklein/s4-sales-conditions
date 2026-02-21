@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="API_SLSPRICINGCONDITIONRECORD_SRV" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityType Name="A_SlsPrcgConditionRecordType">
+        <Key>
+          <PropertyRef Name="ConditionRecord"/>
+          <PropertyRef Name="ConditionSequentialNumber"/>
+        </Key>
+        <Property Name="ConditionRecord" Type="Edm.String" Nullable="false" MaxLength="10"/>
+        <Property Name="ConditionSequentialNumber" Type="Edm.String" Nullable="false" MaxLength="2"/>
+        <Property Name="ConditionTable" Type="Edm.String" MaxLength="3"/>
+        <Property Name="ConditionType" Type="Edm.String" MaxLength="4"/>
+        <Property Name="ConditionValidityStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date"/>
+        <Property Name="ConditionValidityEndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date"/>
+        <Property Name="ConditionRateValue" Type="Edm.Decimal" Precision="24" Scale="9"/>
+        <Property Name="ConditionRateValueUnit" Type="Edm.String" MaxLength="5"/>
+        <Property Name="WorkAgreement" Type="Edm.String" MaxLength="10"/>
+        <Property Name="Customer" Type="Edm.String" MaxLength="10"/>
+      </EntityType>
+      <EntityContainer Name="API_SLSPRICINGCONDITIONRECORD_SRV" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="A_SlsPrcgConditionRecord" EntityType="API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecordType"/>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
