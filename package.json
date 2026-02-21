@@ -1,0 +1,36 @@
+{
+  "name": "s4-sales-conditions",
+  "version": "1.0.0",
+  "description": "Side-by-side sales price condition maintenance for SAP S/4 HANA Cloud",
+  "private": true,
+  "dependencies": {
+    "@cap-js/hana": "2.6.0",
+    "@sap/cds": "9.7.1",
+    "express": "5.2.1"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "2.1.3",
+    "jest": "30.2.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "test": "jest --passWithNoTests"
+  },
+  "cds": {
+    "requires": {
+      "db": "hana",
+      "[development]": {
+        "db": "sqlite"
+      }
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/test/**/*.test.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/gen/"
+    ]
+  }
+}

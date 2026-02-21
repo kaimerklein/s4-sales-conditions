@@ -1,0 +1,52 @@
+_schema-version: "3.1"
+ID: s4-sales-conditions
+version: 1.0.0
+description: Side-by-side sales price condition maintenance for SAP S/4 HANA Cloud
+
+parameters:
+  enable-parallel-deployments: true
+
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+
+modules:
+  - name: s4-sales-conditions-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 256M
+    requires:
+      - name: s4-sales-conditions-db
+      - name: s4-sales-conditions-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+
+  - name: s4-sales-conditions-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 256M
+    requires:
+      - name: s4-sales-conditions-db
+
+resources:
+  - name: s4-sales-conditions-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+  - name: s4-sales-conditions-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
