@@ -144,3 +144,6 @@ _out/
 *.db
 default-*.json
 connection.properties
+
+
+*.sqlite
