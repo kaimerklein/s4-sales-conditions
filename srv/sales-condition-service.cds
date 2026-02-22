@@ -16,4 +16,18 @@ service SalesConditionService {
 
   function getConditionRecords(workerId : String, customer : String)
     returns array of ConditionRecord;
+
+  @readonly entity ConditionRecords {
+    key ConditionRecord            : String;
+    key ConditionSequentialNumber  : String;
+        ConditionTable             : String;
+        ConditionType              : String;
+        ConditionValidityStartDate : Date;
+        ConditionValidityEndDate   : Date;
+        ConditionRateValue         : Decimal;
+        ConditionRateValueUnit     : String;
+        WorkAgreement              : String;
+        Customer                   : String;
+        WorkerId                   : String;
+  }
 }
