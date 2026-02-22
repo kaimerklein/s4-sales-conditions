@@ -10,7 +10,7 @@ Side-by-side extension to SAP S/4 HANA Cloud (Public Cloud Edition) for maintain
 - SAP CAP CLI (`@sap/cds-dk`) installed globally: `npm i -g @sap/cds-dk`
 - For deployment: Cloud Foundry CLI with MTA plugin (`cf install-plugin multiapps`)
 
-### Local Execution (Hybrid Testing Mode)
+### Local Execution
 
 ```bash
 npm ci
@@ -19,13 +19,15 @@ cds watch
 
 The application starts with an in-memory SQLite database. Open the provided URL to access the service endpoints.
 
-For hybrid testing against a real S/4 HANA backend:
+To connect to a real S/4 HANA backend, create a `.cdsrc-private.json` file in the project root (see `.env.example` for the structure). This file is gitignored and provides credentials directly to CDS, avoiding the environment-variable underscore ambiguity that occurs with S/4 service names like `API_SLSPRICINGCONDITIONRECORD_SRV`. No special profile flag is needed — `cds watch` picks up the credentials automatically.
+
+### Running Tests
 
 ```bash
-cp .env.example .env
-# Fill in your S/4 HANA credentials in .env
-cds watch --profile hybrid
+npm test
 ```
+
+Tests use `@cap-js/cds-test` to boot the CAP server and mock external OData services via `cds.connect.to` spies. See [ADR-004](docs/adr/004-mock-external-services-in-tests.md) for details.
 
 ### Deployment via mbt and cf
 
@@ -41,10 +43,21 @@ cf deploy mta_archives/s4-sales-conditions_1.0.0.mtar
 |---------|---------|
 | `@sap/cds` | SAP Cloud Application Programming Model runtime |
 | `@cap-js/hana` | SAP HANA database driver for CAP |
+| `@sap-cloud-sdk/connectivity` | SAP Cloud SDK connectivity layer for destination handling |
+| `@sap-cloud-sdk/http-client` | SAP Cloud SDK HTTP client for outbound requests |
+| `@sap-cloud-sdk/resilience` | SAP Cloud SDK resilience (retry, circuit breaker) |
 | `express` | HTTP server framework (required by CAP) |
+| `@cap-js/cds-test` | CAP test utilities (dev only) |
 | `@cap-js/sqlite` | SQLite driver for local development (dev only) |
 | `jest` | Testing framework (dev only) |
 
 ## Architecture Decisions
 
 Architecture Decision Records are maintained in [`docs/adr/`](docs/adr/).
+
+| ADR | Title |
+|-----|-------|
+| [001](docs/adr/001-function-based-services.md) | Function-based services over entity CRUD |
+| [002](docs/adr/002-three-tier-service-layering.md) | Three-tier service layering |
+| [003](docs/adr/003-credentials-via-cdsrc-private.md) | Credentials via .cdsrc-private.json |
+| [004](docs/adr/004-mock-external-services-in-tests.md) | Mock external services via cds.connect.to spy |
