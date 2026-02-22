@@ -139,6 +139,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # SAP CAP
+.cdsrc-private.json
 gen/
 _out/
 *.db
@@ -148,3 +149,5 @@ connection.properties
 
 *.sqlite
 db.sql*
+
+.cdsrc*.json

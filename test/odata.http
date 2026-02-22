@@ -1,6 +1,6 @@
 
 # Basic Auth for Dev System
-@auth=Basic 
+@auth=
 
 ### Get Employee - P_KeyDate mandatory
 # GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_TT_PERSONWORKAGREEMENT_CDS/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'1979-01-01T00:00:00')/Set?$filter=substringof('38',PersonWorkAgreementExternalID)&$format=json
