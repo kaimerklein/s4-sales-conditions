@@ -1,0 +1,54 @@
+{
+ "meta": {
+  "creator": "cds-dk 9.6.0"
+ },
+ "$version": "2.0",
+ "definitions": {
+  "YY1_RSM_WORKAGRMNT_VAL_IE_CDS": {
+   "kind": "service",
+   "@cds.external": true,
+   "@m.IsDefaultEntityContainer": "true"
+  },
+  "YY1_RSM_WORKAGRMNT_VAL_IE_CDS.YY1_RSM_WORKAGRMNT_VAL_IE": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "elements": {
+    "PersonWorkAgreement": {
+     "key": true,
+     "type": "cds.String",
+     "length": 8,
+     "notNull": true
+    },
+    "PersonWorkAgreementExternalID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 20,
+     "notNull": true
+    },
+    "StartDate": {
+     "key": true,
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "notNull": true
+    },
+    "CompanyCode": {
+     "type": "cds.String",
+     "length": 4
+    },
+    "CompanyCodeName": {
+     "type": "cds.String",
+     "length": 80
+    },
+    "Company": {
+     "type": "cds.String",
+     "length": 6
+    },
+    "EndDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date"
+    }
+   }
+  }
+ }
+}

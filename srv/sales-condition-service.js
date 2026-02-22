@@ -13,11 +13,11 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
 
       let workAgreementId;
       if (workerId) {
-        const mapping = getWorkAgreement(workerId);
-        if (!mapping) {
+        const mappings = await getWorkAgreement(workerId);
+        if (!mappings) {
           return req.reject(404, `No work agreement found for worker ID "${workerId}"`);
         }
-        workAgreementId = mapping.workAgreementId;
+        workAgreementId = mappings[0].workAgreementId;
       }
 
       return getConditionRecords({ workAgreementId, customer });

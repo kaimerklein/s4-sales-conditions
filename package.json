@@ -29,6 +29,10 @@
       "API_SLSPRICINGCONDITIONRECORD_SRV": {
         "kind": "odata-v2",
         "model": "srv/external/API_SLSPRICINGCONDITIONRECORD_SRV"
+      },
+      "YY1_RSM_WORKAGRMNT_VAL_IE_CDS": {
+        "kind": "odata-v2",
+        "model": "srv/external/YY1_RSM_WORKAGRMNT_VAL_IE_CDS"
       }
     }
   },

@@ -1,20 +1,43 @@
-// Mock worker ID -> work agreement mapping.
-// Replace this module with a real OData call to the Employee Central API
-// when it becomes available. The function signature must stay the same.
+const cds = require('@sap/cds');
 
-const MOCK_MAPPINGS = {
-  '10001': { workAgreementId: 'WA-0001', validityStartDate: '2024-01-01' },
-  '10002': { workAgreementId: 'WA-0002', validityStartDate: '2024-03-15' },
-  '10003': { workAgreementId: 'WA-0003', validityStartDate: '2023-06-01' },
-};
+const SERVICE_NAME = 'YY1_RSM_WORKAGRMNT_VAL_IE_CDS';
 
 /**
- * Look up the work agreement for a given worker ID.
- * @param {string} workerId - The worker / employee personal number.
- * @returns {{ workAgreementId: string, validityStartDate: string } | null}
+ * Look up work agreement mappings for a given worker ID via the
+ * YY1_RSM_WORKAGRMNT_VAL_IE OData service.
+ *
+ * The remote service may return multiple rows per PersonWorkAgreement
+ * (different validity periods). We deduplicate by PersonWorkAgreement.
+ *
+ * @param {string} workerId - PersonWorkAgreementExternalID (worker / employee number)
+ * @returns {Promise<Array<{workAgreementId: string, companyCode: string, companyCodeName: string, company: string, startDate: string, endDate: string}> | null>}
+ *   Array of unique work agreement mappings, or null if none found.
  */
-function getWorkAgreement(workerId) {
-  return MOCK_MAPPINGS[workerId] ?? null;
+async function getWorkAgreement(workerId) {
+  const srv = await cds.connect.to(SERVICE_NAME);
+  const { YY1_RSM_WORKAGRMNT_VAL_IE } = srv.entities;
+
+  const results = await srv.run(
+    SELECT.from(YY1_RSM_WORKAGRMNT_VAL_IE)
+      .where({ PersonWorkAgreementExternalID: workerId })
+  );
+
+  if (!results.length) return null;
+
+  // Deduplicate by PersonWorkAgreement
+  const seen = new Set();
+  return results.filter(r => {
+    if (seen.has(r.PersonWorkAgreement)) return false;
+    seen.add(r.PersonWorkAgreement);
+    return true;
+  }).map(r => ({
+    workAgreementId: r.PersonWorkAgreement,
+    companyCode: r.CompanyCode,
+    companyCodeName: r.CompanyCodeName,
+    company: r.Company,
+    startDate: r.StartDate,
+    endDate: r.EndDate,
+  }));
 }
 
 module.exports = { getWorkAgreement };

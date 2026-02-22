@@ -39,6 +39,28 @@ const MOCK_RECORDS = [
   },
 ];
 
+// Worker mapping fixture: worker 10001 -> WA-0001, worker 10003 -> WA-0003
+const WORKER_FIXTURE = [
+  {
+    PersonWorkAgreement: 'WA-0001',
+    PersonWorkAgreementExternalID: '10001',
+    CompanyCode: '1000',
+    CompanyCodeName: 'ACME Corp',
+    Company: 'AC',
+    StartDate: '2024-01-01',
+    EndDate: '2024-12-31',
+  },
+  {
+    PersonWorkAgreement: 'WA-0003',
+    PersonWorkAgreementExternalID: '10003',
+    CompanyCode: '3000',
+    CompanyCodeName: 'Gamma GmbH',
+    Company: 'GG',
+    StartDate: '2023-06-01',
+    EndDate: '2024-05-31',
+  },
+];
+
 function matchesWhere(record, where) {
   let i = 0;
   while (i < where.length) {
@@ -55,8 +77,8 @@ function matchesWhere(record, where) {
   return true;
 }
 
-// Mock the external service before cds.test() boots the server
-const mockService = {
+// Mock the external services before cds.test() boots the server
+const mockConditionService = {
   entities: {
     A_SlsPrcgConditionRecord: 'A_SlsPrcgConditionRecord',
   },
@@ -67,9 +89,21 @@ const mockService = {
   }),
 };
 
+const mockWorkerService = {
+  entities: {
+    YY1_RSM_WORKAGRMNT_VAL_IE: 'YY1_RSM_WORKAGRMNT_VAL_IE',
+  },
+  run: jest.fn(async (query) => {
+    const where = query?.SELECT?.where;
+    if (!where) return [...WORKER_FIXTURE];
+    return WORKER_FIXTURE.filter((r) => matchesWhere(r, where));
+  }),
+};
+
 const originalConnect = cds.connect.to.bind(cds.connect);
 jest.spyOn(cds.connect, 'to').mockImplementation(async (name) => {
-  if (name === 'API_SLSPRICINGCONDITIONRECORD_SRV') return mockService;
+  if (name === 'API_SLSPRICINGCONDITIONRECORD_SRV') return mockConditionService;
+  if (name === 'YY1_RSM_WORKAGRMNT_VAL_IE_CDS') return mockWorkerService;
   return originalConnect(name);
 });
 
