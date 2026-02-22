@@ -147,3 +147,4 @@ connection.properties
 
 
 *.sqlite
+db.sql*
