@@ -27,7 +27,7 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
       const filters = _extractFilters(req.query.SELECT.where);
 
       if (!filters.WorkerId && !filters.Customer) {
-        return req.reject(400, 'At least one filter is required: WorkerId or Customer');
+        return [];
       }
 
       let workAgreementId;

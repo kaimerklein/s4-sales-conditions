@@ -148,12 +148,8 @@ describe('ConditionRecords entity – READ handler', () => {
     expect(data.value[0].ConditionRecord).toBe('CR001');
   });
 
-  it('returns 400 when no filter is provided', async () => {
-    try {
-      await test.axios.get('/odata/v4/sales-condition/ConditionRecords');
-      fail('Expected request to fail');
-    } catch (e) {
-      expect(e.response.status).toBe(400);
-    }
+  it('returns empty array when no filter is provided', async () => {
+    const { data } = await test.axios.get('/odata/v4/sales-condition/ConditionRecords');
+    expect(data.value).toEqual([]);
   });
 });
