@@ -1,41 +1,60 @@
 const cds = require('@sap/cds');
 
-const MOCK_RECORDS = [
+// Mock validity records with nested condition record data
+const MOCK_VALIDITY_RECORDS = [
   {
     ConditionRecord: 'CR001',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionValidityStartDate: '2024-01-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 100.0,
-    ConditionRateValueUnit: 'EUR',
-    WorkAgreement: 'WA-0001',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PCP0',
+    Personnel: 'WA-0001',
     Customer: 'CUST01',
+    EngagementProject: 'PRJ001',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR001',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '304',
+      ConditionType: 'PCP0',
+      ConditionRateValue: 100.0,
+      ConditionRateValueUnit: 'EUR',
+      ConditionCurrency: 'EUR',
+    },
   },
   {
     ConditionRecord: 'CR002',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionValidityStartDate: '2024-03-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 200.0,
-    ConditionRateValueUnit: 'USD',
-    WorkAgreement: 'WA-0002',
+    ConditionValidityStartDate: '2024-03-01',
+    ConditionType: 'PCP0',
+    Personnel: 'WA-0002',
     Customer: 'CUST02',
+    EngagementProject: '',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR002',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '304',
+      ConditionType: 'PCP0',
+      ConditionRateValue: 200.0,
+      ConditionRateValueUnit: 'USD',
+      ConditionCurrency: 'USD',
+    },
   },
   {
     ConditionRecord: 'CR003',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '305',
-    ConditionType: 'PR00',
-    ConditionValidityStartDate: '2024-01-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 50.0,
-    ConditionRateValueUnit: 'EUR',
-    WorkAgreement: 'WA-0001',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PR00',
+    Personnel: 'WA-0001',
     Customer: 'CUST01',
+    EngagementProject: '',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR003',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '305',
+      ConditionType: 'PR00',
+      ConditionRateValue: 50.0,
+      ConditionRateValueUnit: 'EUR',
+      ConditionCurrency: 'EUR',
+    },
   },
 ];
 
@@ -80,12 +99,12 @@ function matchesWhere(record, where) {
 // Mock the external services before cds.test() boots the server
 const mockConditionService = {
   entities: {
-    A_SlsPrcgConditionRecord: 'A_SlsPrcgConditionRecord',
+    A_SlsPrcgCndnRecdValidity: 'A_SlsPrcgCndnRecdValidity',
   },
   run: jest.fn(async (query) => {
     const where = query?.SELECT?.where;
-    if (!where) return [...MOCK_RECORDS];
-    return MOCK_RECORDS.filter((r) => matchesWhere(r, where));
+    if (!where) return [...MOCK_VALIDITY_RECORDS];
+    return MOCK_VALIDITY_RECORDS.filter((r) => matchesWhere(r, where));
   }),
 };
 
@@ -117,6 +136,7 @@ describe('SalesConditionService', () => {
     expect(data.value.length).toBe(1);
     expect(data.value[0].ConditionRecord).toBe('CR001');
     expect(data.value[0].ConditionType).toBe('PCP0');
+    expect(data.value[0].Personnel).toBe('WA-0001');
   });
 
   it('returns records filtered by customer only', async () => {

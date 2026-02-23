@@ -10,8 +10,10 @@ service SalesConditionService {
     ConditionValidityEndDate   : Date;
     ConditionRateValue         : Decimal;
     ConditionRateValueUnit     : String;
-    WorkAgreement              : String;
+    ConditionCurrency          : String;
+    Personnel                  : String;
     Customer                   : String;
+    EngagementProject          : String;
   }
 
   function getConditionRecords(workerId : String, customer : String)
@@ -19,15 +21,17 @@ service SalesConditionService {
 
   @readonly entity ConditionRecords {
     key ConditionRecord            : String;
-    key ConditionSequentialNumber  : String;
+    key ConditionValidityEndDate   : Date;
+        ConditionSequentialNumber  : String;
         ConditionTable             : String;
         ConditionType              : String;
         ConditionValidityStartDate : Date;
-        ConditionValidityEndDate   : Date;
         ConditionRateValue         : Decimal;
         ConditionRateValueUnit     : String;
-        WorkAgreement              : String;
+        ConditionCurrency          : String;
+        Personnel                  : String;
         Customer                   : String;
+        EngagementProject          : String;
         WorkerId                   : String;
   }
 }

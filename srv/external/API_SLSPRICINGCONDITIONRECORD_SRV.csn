@@ -7,57 +7,2173 @@
   "API_SLSPRICINGCONDITIONRECORD_SRV": {
    "kind": "service",
    "@cds.external": true,
-   "@m.IsDefaultEntityContainer": "true"
+   "@m.IsDefaultEntityContainer": "true",
+   "@sap.message.scope.supported": "true",
+   "@sap.supported.formats": "atom json xlsx"
   },
-  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecord": {
+  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdSuplmnt": {
    "kind": "entity",
    "@cds.external": true,
    "@cds.persistence.skip": true,
+   "@sap.content.version": "1",
+   "@sap.label": "Condition Supplements",
    "elements": {
     "ConditionRecord": {
      "key": true,
      "type": "cds.String",
      "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Number of Condition Record",
      "notNull": true
     },
     "ConditionSequentialNumber": {
      "key": true,
      "type": "cds.String",
      "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Sequent. No. of Cond",
+     "@sap.quickinfo": "Sequential number of the condition",
      "notNull": true
     },
     "ConditionTable": {
      "type": "cds.String",
-     "length": 3
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Table"
+    },
+    "ConditionApplication": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Application"
     },
     "ConditionType": {
      "type": "cds.String",
-     "length": 4
-    },
-    "ConditionValidityStartDate": {
-     "type": "cds.Date",
-     "@sap.display.format": "Date"
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Type"
     },
     "ConditionValidityEndDate": {
      "type": "cds.Date",
-     "@sap.display.format": "Date"
+     "@sap.display.format": "Date",
+     "@sap.label": "Valid To",
+     "@sap.quickinfo": "Valid To Date"
+    },
+    "ConditionValidityStartDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Valid From",
+     "@sap.quickinfo": "Valid-From Date"
+    },
+    "CreatedByUser": {
+     "type": "cds.String",
+     "length": 12,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Created By",
+     "@sap.quickinfo": "Name of Person Responsible for Creating the Object"
+    },
+    "CreationDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Created On",
+     "@sap.quickinfo": "Record Creation Date"
+    },
+    "ConditionTextID": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Text number",
+     "@sap.quickinfo": "Number of texts"
+    },
+    "PricingScaleType": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Scale Type"
+    },
+    "PricingScaleBasis": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Scale Base Type"
+    },
+    "ConditionScaleQuantity": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unit": "BaseUnit",
+     "@sap.label": "Scale Quantity",
+     "@sap.quickinfo": "Condition Scale Quantity"
+    },
+    "ConditionScaleQuantityUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Scale Unit of Meas.",
+     "@sap.quickinfo": "Condition Scale Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionScaleAmount": {
+     "type": "cds.Decimal",
+     "precision": 16,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Scale Value"
+    },
+    "ConditionScaleAmountCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Scale Currency",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionCalculationType": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Calculation Type",
+     "@sap.quickinfo": "Calculation Type for Condition"
     },
     "ConditionRateValue": {
      "type": "cds.Decimal",
-     "precision": 24,
-     "scale": 9
+     "precision": 12,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Condition Amount",
+     "@sap.quickinfo": "Condition amount or percentage where no scale exists"
     },
     "ConditionRateValueUnit": {
      "type": "cds.String",
-     "length": 5
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Unit (Currency or Percentage)",
+     "@sap.semantics": "currency-code"
     },
-    "WorkAgreement": {
+    "ConditionRateRatio": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionRateRatioUnit",
+     "@sap.label": "Ratio",
+     "@sap.quickinfo": "Condition Ratio (in Percent or Per Mille)"
+    },
+    "ConditionRateRatioUnit": {
      "type": "cds.String",
-     "length": 10
+     "length": 3,
+     "@sap.label": "Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionRateAmount": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionCurrency",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Unit (Currency or Percentage)",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionQuantity": {
+     "type": "cds.Decimal",
+     "precision": 5,
+     "scale": 0,
+     "@sap.unit": "ConditionQuantityUnit",
+     "@sap.label": "Pricing Unit",
+     "@sap.quickinfo": "Condition Pricing Unit"
+    },
+    "ConditionQuantityUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Unit of Measure",
+     "@sap.quickinfo": "Condition Unit",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionToBaseQtyNmrtr": {
+     "type": "cds.Decimal",
+     "precision": 5,
+     "scale": 0,
+     "@sap.label": "NumeratorForConvers.",
+     "@sap.quickinfo": "Numerator for converting condition units to base units"
+    },
+    "ConditionToBaseQtyDnmntr": {
+     "type": "cds.Decimal",
+     "precision": 5,
+     "scale": 0,
+     "@sap.label": "Denom.for Conversion",
+     "@sap.quickinfo": "Denominator for converting condition units to base units"
+    },
+    "BaseUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Base Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionLowerLimit": {
+     "type": "cds.Decimal",
+     "precision": 12,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Lower limit",
+     "@sap.quickinfo": "Lower limit of the condition rate/amount"
+    },
+    "ConditionLowerLimitAmount": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionCurrency",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionLowerLimitRatio": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionRateRatioUnit",
+     "@sap.label": "Ratio",
+     "@sap.quickinfo": "Condition Ratio (in Percent or Per Mille)"
+    },
+    "ConditionUpperLimit": {
+     "type": "cds.Decimal",
+     "precision": 12,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Upper limit",
+     "@sap.quickinfo": "Upper limit for the condition rate"
+    },
+    "ConditionUpperLimitAmount": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionCurrency",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionUpperLimitRatio": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionRateRatioUnit",
+     "@sap.label": "Ratio",
+     "@sap.quickinfo": "Condition Ratio (in Percent or Per Mille)"
+    },
+    "ConditionAlternativeCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Currency (for Cumulation Fields)",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionExclusion": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Exclusion",
+     "@sap.quickinfo": "Condition exclusion indicator"
+    },
+    "ConditionIsDeleted": {
+     "type": "cds.Boolean",
+     "@sap.label": "Deletion Indicator",
+     "@sap.quickinfo": "Deletion Indicator for Condition Record"
+    },
+    "AdditionalValueDays": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Addit. Value Days",
+     "@sap.quickinfo": "Additional Value Days"
+    },
+    "FixedValueDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Fixed Value Date"
+    },
+    "PaymentTerms": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Terms of Payment",
+     "@sap.quickinfo": "Key for Terms of Payment"
+    },
+    "CndnMaxNumberOfSalesOrders": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Max.number.of.orders",
+     "@sap.quickinfo": "Maximum number of sales orders per condition record"
+    },
+    "MinimumConditionBasisValue": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unit": "BaseUnit",
+     "@sap.label": "Min.cond.base value",
+     "@sap.quickinfo": "Minimum condition base value"
+    },
+    "MaximumConditionBasisValue": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unit": "BaseUnit",
+     "@sap.label": "Max.cond.base value",
+     "@sap.quickinfo": "Maximum condition base value"
+    },
+    "MaximumConditionAmount": {
+     "type": "cds.Decimal",
+     "precision": 14,
+     "scale": 3,
+     "@sap.unit": "ConditionAlternativeCurrency",
+     "@sap.label": "Max.condition value",
+     "@sap.quickinfo": "Maximum condition value"
+    },
+    "IncrementalScale": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Incremental scale",
+     "@sap.quickinfo": "Number of incremental scale"
+    },
+    "PricingScaleLine": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Pricing scale",
+     "@sap.quickinfo": "Scale number for pricing"
+    },
+    "ConditionReleaseStatus": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Release Status"
+    },
+    "SalesPriceApprovalRequest": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Approval Request",
+     "@sap.quickinfo": "Approval Request for Price Conditions"
+    },
+    "ConditionChangeReason": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Cndn Change Reason",
+     "@sap.quickinfo": "Reason for Changing Condition Record"
+    },
+    "PrevApprovedConditionRecord": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Previously Approved Condition Record"
+    },
+    "ETag": {
+     "type": "cds.String",
+     "length": 40
+    },
+    "to_SlsPrcgCndnRecdValidity": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdValidity",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "to_SlsPrcgCndnRecordScale": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecordScale",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "to_SlsPrcgCndnSupplementText": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnSupplementText",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "to_SlsPrcgConditionRecord": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecord",
+     "keys": []
+    }
+   }
+  },
+  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdValidity": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.deletable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Condition Record Validity",
+   "elements": {
+    "ConditionRecord": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Number of Condition Record",
+     "notNull": true
+    },
+    "ConditionValidityEndDate": {
+     "key": true,
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Valid To",
+     "@sap.quickinfo": "Validity end date of the condition record",
+     "notNull": true
+    },
+    "ConditionValidityStartDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Valid From",
+     "@sap.quickinfo": "Validity start date of the condition record"
+    },
+    "ConditionApplication": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Application"
+    },
+    "ConditionType": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Type"
+    },
+    "ConditionReleaseStatus": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Release Status"
+    },
+    "DepartureCountry": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Departure Ctry/Reg.",
+     "@sap.quickinfo": "Departure Country/Region (from which the goods are sent)"
+    },
+    "SalesDocument": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sales Document"
+    },
+    "SalesDocumentItem": {
+     "type": "cds.String",
+     "length": 6,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Sales Document Item"
+    },
+    "BillableControl": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Accounting Indicator"
+    },
+    "Industry": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Industry",
+     "@sap.quickinfo": "Industry Key"
+    },
+    "CityCode": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "City Code"
+    },
+    "ConditionContract": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Contract"
+    },
+    "County": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "County Code"
+    },
+    "EngagementProject": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer Project ID",
+     "@sap.quickinfo": "Commercial Project ID"
+    },
+    "ConfigurationNumber": {
+     "type": "cds.String",
+     "length": 18,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Internal Object No.",
+     "@sap.quickinfo": "Internal Object Number"
+    },
+    "BR_NFDocumentType": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Document type"
+    },
+    "BRSpcfcFreeDefinedField1": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Dynamic Key Field 1"
+    },
+    "BRSpcfcFreeDefinedField2": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Dynamic Key Field 2"
+    },
+    "BRSpcfcFreeDefinedField3": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Dynamic Key Field 3"
+    },
+    "InternationalArticleNumber": {
+     "type": "cds.String",
+     "length": 18,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "EAN/UPC",
+     "@sap.quickinfo": "International Article Number (EAN/UPC)"
+    },
+    "TechnicalObjectType": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Object Type",
+     "@sap.quickinfo": "Type of Technical Object"
+    },
+    "Equipment": {
+     "type": "cds.String",
+     "length": 18,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Equipment",
+     "@sap.quickinfo": "Equipment Number"
+    },
+    "CustomerHierarchy": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer"
+    },
+    "IncotermsClassification": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Incoterms",
+     "@sap.quickinfo": "Incoterms (Part 1)"
+    },
+    "IncotermsTransferLocation": {
+     "type": "cds.String",
+     "length": 28,
+     "@sap.label": "Incoterms (Part 2)"
+    },
+    "AccountTaxType": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Type"
+    },
+    "TxRlvnceClassfctnForArgentina": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Rel. Classif.",
+     "@sap.quickinfo": "Tax relevant classification"
+    },
+    "BR_TaxCode": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Code",
+     "@sap.quickinfo": "SD tax code"
+    },
+    "LocalSalesTaxApplicabilityCode": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "LST CST Appl. Code",
+     "@sap.quickinfo": "LST CST Applicability Code"
+    },
+    "CustomerGroup": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer Group"
+    },
+    "CustomerPriceGroup": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Price Group",
+     "@sap.quickinfo": "Customer Price Group"
+    },
+    "MaterialPricingGroup": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material Price Grp",
+     "@sap.quickinfo": "Material Price Group"
+    },
+    "SoldToParty": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sold-to Party"
+    },
+    "BPForSoldToParty": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Business Partner",
+     "@sap.quickinfo": "Business Partner Number"
     },
     "Customer": {
      "type": "cds.String",
-     "length": 10
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer",
+     "@sap.quickinfo": "Customer number"
+    },
+    "BPForCustomer": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Business Partner",
+     "@sap.quickinfo": "Business Partner Number"
+    },
+    "PayerParty": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Payer"
+    },
+    "BPForPayerParty": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Business Partner",
+     "@sap.quickinfo": "Business Partner Number"
+    },
+    "ShipToParty": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Ship-to Party"
+    },
+    "BPForShipToParty": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Business Partner",
+     "@sap.quickinfo": "Business Partner Number"
+    },
+    "Supplier": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Supplier",
+     "@sap.quickinfo": "Supplier's Account Number"
+    },
+    "BPForSupplier": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Business Partner",
+     "@sap.quickinfo": "Business Partner Number"
+    },
+    "DestinationCountry": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Dest. Country/Region",
+     "@sap.quickinfo": "Destination Country/Region"
+    },
+    "MaterialGroup": {
+     "type": "cds.String",
+     "length": 9,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material Group"
+    },
+    "Material": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material",
+     "@sap.quickinfo": "Material Number"
+    },
+    "ReturnsRefundExtent": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Refund Code",
+     "@sap.quickinfo": "Returns Refund Code"
+    },
+    "AdditionalMaterialGroup1": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material Group 1"
+    },
+    "AdditionalMaterialGroup2": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material Group 2"
+    },
+    "AdditionalMaterialGroup3": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material Group 3"
+    },
+    "AdditionalMaterialGroup4": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material Group 4"
+    },
+    "AdditionalMaterialGroup5": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Material Group 5"
+    },
+    "Personnel": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Personnel Number"
+    },
+    "PriceListType": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Price List Type"
+    },
+    "PostalCode": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Postal Code"
+    },
+    "Region": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Region",
+     "@sap.quickinfo": "Region (State, Province, County)"
+    },
+    "EngagementProjectServiceOrg": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Service Organization"
+    },
+    "RequirementSegment": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Requirement Segment"
+    },
+    "StockSegment": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Stock Segment"
+    },
+    "Division": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Division"
+    },
+    "CommodityCode": {
+     "type": "cds.String",
+     "length": 17,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Commodity Code"
+    },
+    "ConsumptionTaxCtrlCode": {
+     "type": "cds.String",
+     "length": 16,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Control Code",
+     "@sap.quickinfo": "Control code for consumption taxes in foreign trade"
+    },
+    "BRSpcfcTaxBasePercentageCode": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Tax Base",
+     "@sap.quickinfo": "Tax Base in Percentage"
+    },
+    "BRSpcfcTxGrpDynTaxExceptions": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Tax Group",
+     "@sap.quickinfo": "Tax Group for Dynamic Tax Exceptions"
+    },
+    "CustomerTaxClassification1": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.1 Customer",
+     "@sap.quickinfo": "Tax Classification 1 for Customer"
+    },
+    "CustomerTaxClassification2": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.2 Customer",
+     "@sap.quickinfo": "Tax Classification 2 for Customer"
+    },
+    "CustomerTaxClassification3": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.3 Customer",
+     "@sap.quickinfo": "Tax Classification 3 for Customer"
+    },
+    "CustomerTaxClassification4": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.4 Customer",
+     "@sap.quickinfo": "Tax Classification 4 for Customer"
+    },
+    "CustomerTaxClassification5": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.5 Customer",
+     "@sap.quickinfo": "Tax Classification 5 for Customer"
+    },
+    "CustomerTaxClassification6": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.6 Customer",
+     "@sap.quickinfo": "Tax Classification 6 for Customer"
+    },
+    "CustomerTaxClassification7": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.7 Customer",
+     "@sap.quickinfo": "Tax Classification 7 for Customer"
+    },
+    "CustomerTaxClassification8": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.8 Customer",
+     "@sap.quickinfo": "Tax Classification 8 for Customer"
+    },
+    "CustomerTaxClassification9": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.9 Customer",
+     "@sap.quickinfo": "Tax Classification 9 for Customer"
+    },
+    "ProductTaxClassification1": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class. Material",
+     "@sap.quickinfo": "Tax Classification of Material"
+    },
+    "ProductTaxClassification2": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.2 Material",
+     "@sap.quickinfo": "Tax Classification 2 for Material"
+    },
+    "ProductTaxClassification3": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.3 Material",
+     "@sap.quickinfo": "Tax Classification 3 for Material"
+    },
+    "ProductTaxClassification4": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.4 Material",
+     "@sap.quickinfo": "Tax Classification 4 for Material"
+    },
+    "ProductTaxClassification5": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.5 Material",
+     "@sap.quickinfo": "Tax Classification 5 for Material"
+    },
+    "ProductTaxClassification6": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.6 Material",
+     "@sap.quickinfo": "Tax Classification 6 for Material"
+    },
+    "ProductTaxClassification7": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.7 Material",
+     "@sap.quickinfo": "Tax Classification 7 for Material"
+    },
+    "ProductTaxClassification8": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.8 Material",
+     "@sap.quickinfo": "Tax Classification 8 for Material"
+    },
+    "ProductTaxClassification9": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Class.9 Material",
+     "@sap.quickinfo": "Tax Classification 9 for Material"
+    },
+    "TradingContract": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Trading Contract"
+    },
+    "TradingContractItem": {
+     "type": "cds.String",
+     "length": 6,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Item Number",
+     "@sap.quickinfo": "Item Number of Trading Contract"
+    },
+    "TaxJurisdiction": {
+     "type": "cds.String",
+     "length": 15,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Jurisdiction"
+    },
+    "BRSpcfcTaxDepartureRegion": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Ship From",
+     "@sap.quickinfo": "Ship from location (tax region)"
+    },
+    "BRSpcfcTaxDestinationRegion": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Ship To",
+     "@sap.quickinfo": "Ship to location (tax region)"
+    },
+    "MainItemMaterialPricingGroup": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "MnItem MatPricingGrp",
+     "@sap.quickinfo": "Material pricing group of main item"
+    },
+    "MainItemPricingRefMaterial": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Pricing Ref.Material",
+     "@sap.quickinfo": "Pricing reference material of main item"
+    },
+    "VariantCondition": {
+     "type": "cds.String",
+     "length": 26,
+     "@sap.label": "Variant Key",
+     "@sap.quickinfo": "Variant Condition Key"
+    },
+    "ValueAddedServiceChargeCode": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "VAS Charge Code"
+    },
+    "SDDocument": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "SD Document",
+     "@sap.quickinfo": "Sales and Distribution Document Number"
+    },
+    "ReferenceSDDocument": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Reference Document",
+     "@sap.quickinfo": "Document Number of Reference Document"
+    },
+    "ReferenceSDDocumentItem": {
+     "type": "cds.String",
+     "length": 6,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Reference Item",
+     "@sap.quickinfo": "Item Number of the Reference Item"
+    },
+    "SalesOffice": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sales Office"
+    },
+    "SalesGroup": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sales Group"
+    },
+    "SalesOrganization": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sales Organization"
+    },
+    "SalesOrderSalesOrganization": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sales Org. of Order",
+     "@sap.quickinfo": "Sales organization of sales order"
+    },
+    "OrderQuantityUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Sales Unit",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "DistributionChannel": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Distribution Channel"
+    },
+    "TransactionCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Document Currency",
+     "@sap.quickinfo": "SD Document Currency",
+     "@sap.semantics": "currency-code"
+    },
+    "WBSElementInternalID": {
+     "type": "cds.String",
+     "length": 24,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "WBS Bill Elem.",
+     "@sap.quickinfo": "WBS Billing Element"
+    },
+    "WBSElementExternalID": {
+     "type": "cds.String",
+     "length": 24,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "WBS Element",
+     "@sap.quickinfo": "Work Breakdown Structure Element (WBS Element) Edited"
+    },
+    "WorkPackage": {
+     "type": "cds.String",
+     "length": 24,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "WBS Work Packg.",
+     "@sap.quickinfo": "WBS Work Package"
+    },
+    "Plant": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Plant"
+    },
+    "PlantRegion": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Region of Dlv. Plant",
+     "@sap.quickinfo": "Region in which plant is located"
+    },
+    "WorkItem": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Work Item ID"
+    },
+    "ConditionProcessingStatus": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Processing Status",
+     "@sap.quickinfo": "Processing status for conditions"
+    },
+    "PricingDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Cndn Pricing Date",
+     "@sap.quickinfo": "Condition Pricing Date"
+    },
+    "ConditionIsExclusive": {
+     "type": "cds.Boolean",
+     "@sap.label": "Exclusive",
+     "@sap.quickinfo": "Indicator condition exclusive"
+    },
+    "ConditionScaleBasisValue": {
+     "type": "cds.String",
+     "length": 7,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Scale Base Value",
+     "@sap.quickinfo": "Condition Scale Base Value"
+    },
+    "TaxCode": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Code",
+     "@sap.quickinfo": "Tax on Sales/Purchases Code"
+    },
+    "ServiceDocument": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Transaction ID"
+    },
+    "ServiceDocumentItem": {
+     "type": "cds.String",
+     "length": 6,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Item Number in Doc.",
+     "@sap.quickinfo": "Shortened Item Number in Document"
+    },
+    "TimeSheetOvertimeCategory": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Overtime Category"
+    },
+    "SalesSDDocumentCategory": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.label": "SD Document Category"
+    },
+    "ReturnReason": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Return Reason"
+    },
+    "ProdUnivHierarchyNode": {
+     "type": "cds.String",
+     "length": 24,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Node",
+     "@sap.quickinfo": "Product Hierarchy Node"
+    },
+    "ProductHierarchyNode": {
+     "type": "cds.String",
+     "length": 24,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Prod. Hier. Node",
+     "@sap.quickinfo": "Product Hierarchy Node"
+    },
+    "CustomerConditionGroup": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "CustomerCondGrp",
+     "@sap.quickinfo": "Customer Attribute for Condition Groups"
+    },
+    "ShippingType": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Shipping Type"
+    },
+    "SubscriptionContractDuration": {
+     "type": "cds.String",
+     "length": 13,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Provider Durat.",
+     "@sap.quickinfo": "Numerical Value of Duration"
+    },
+    "SubscrpnContrDurationUnit": {
+     "type": "cds.String",
+     "length": 12,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Time Unit",
+     "@sap.quickinfo": "IS-T: Unit of Duration for a Telco Contract"
+    },
+    "SubscriptionContractLockReason": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Lock Reason"
+    },
+    "CrsCtlgMappgPriceVersionNumber": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Price Version"
+    },
+    "OrderType": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Order Type"
+    },
+    "SalesDocumentType": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sales Document Type"
+    },
+    "SDDocumentReason": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Order Reason",
+     "@sap.quickinfo": "Order Reason (Reason for the Business Transaction)"
+    },
+    "VolumeRebateGroup": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Volume Rebate Group",
+     "@sap.quickinfo": "Volume rebate group"
+    },
+    "ValuationType": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Valuation Type"
+    },
+    "SalesDistrict": {
+     "type": "cds.String",
+     "length": 6,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Sales District"
+    },
+    "Batch": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Batch",
+     "@sap.quickinfo": "Batch Number"
+    },
+    "PurgDocSupplyingPlant": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Supplying Plant",
+     "@sap.quickinfo": "Supplying (issuing) plant in case of stock transport order"
+    },
+    "MatUsageIndicator": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Usage",
+     "@sap.quickinfo": "Usage Indicator"
+    },
+    "ShippingCondition": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Shipping Conditions"
+    },
+    "PlantCounty": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "County of Dlv. Plant",
+     "@sap.quickinfo": "County in which plant is located"
+    },
+    "PlantCity": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "City of Deliv. Plant",
+     "@sap.quickinfo": "City in which plant is located"
+    },
+    "MaterialExternalGroup": {
+     "type": "cds.String",
+     "length": 18,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Ext. Material Group",
+     "@sap.quickinfo": "External Material Group"
+    },
+    "CustomerHierarchyRootNode": {
+     "type": "cds.String",
+     "length": 20,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "CH Rt. Nd. ID",
+     "@sap.quickinfo": "Customer Hierarchy Root Node ID (Hier ID)"
+    },
+    "CustomerHierarchyNodeID": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Cust. Hier. Node ID",
+     "@sap.quickinfo": "Customer Hierarchy Node ID"
+    },
+    "CustomerHierarchyNodeType": {
+     "type": "cds.String",
+     "length": 30,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Cust. Hier. Nd. Type",
+     "@sap.quickinfo": "Customer Hierarchy Node Type"
+    },
+    "AdditionalCustomerGroup1": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer Group 1"
+    },
+    "AdditionalCustomerGroup2": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer Group 2"
+    },
+    "AdditionalCustomerGroup3": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer Group 3"
+    },
+    "AdditionalCustomerGroup4": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer Group 4"
+    },
+    "AdditionalCustomerGroup5": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Customer Group 5"
+    },
+    "SDDocumentItem": {
+     "type": "cds.String",
+     "length": 6,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Item (SD)",
+     "@sap.quickinfo": "Item number of the SD document"
+    },
+    "CndnBillingDocumentCategory": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Billing Category"
+    },
+    "Country": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Country/Region Key"
+    },
+    "CustomerPurchaseOrderType": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Purchase Order Type",
+     "@sap.quickinfo": "Customer Purchase Order Type"
+    },
+    "CountryOfOrigin": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Cntry/Reg of Origin",
+     "@sap.quickinfo": "Country/Region of Origin of Material (Non-Preferential Ori.)"
+    },
+    "SalesDocumentItemCategory": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Item Category",
+     "@sap.quickinfo": "Sales Document Item Category"
+    },
+    "BillToParty": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Bill-to Party"
+    },
+    "BusinessPartnerIndustryCode": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Industry code"
+    },
+    "BillingDocumentType": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Billing Type"
+    },
+    "MatlAccountAssignmentGroup": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Acct Assmt Grp Mat.",
+     "@sap.quickinfo": "Account Assignment Group for Material"
+    },
+    "PRAContract": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Contract",
+     "@sap.quickinfo": "Contract Number"
+    },
+    "Well": {
+     "type": "cds.String",
+     "length": 15,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Well",
+     "@sap.quickinfo": "Well ID number"
+    },
+    "WellCompletion": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Well Completion",
+     "@sap.quickinfo": "Well Completion Number"
+    },
+    "MeasurementPoint": {
+     "type": "cds.String",
+     "length": 20,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Measurement Point",
+     "@sap.quickinfo": "Measurement point number"
+    },
+    "PricingFormulaNumber": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Formula ID"
+    },
+    "YY1_Auftragsarten_PCI": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.label": "Auftragsarten",
+     "@sap.quickinfo": "Auftragsarten"
+    },
+    "YY1_Mandantengruppe_PCH": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.label": "Mandantengruppe"
+    },
+    "YY1_Mandantengruppe_PCI": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.label": "Mandantengruppe"
+    },
+    "YY1_auftragsartengrpsd_PCI": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.label": "auftragsartengrupsd"
+    },
+    "ETag": {
+     "type": "cds.String",
+     "length": 40
+    },
+    "to_SlsPrcgCndnRecdSuplmnt": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdSuplmnt",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "to_SlsPrcgConditionRecord": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecord",
+     "keys": []
+    }
+   }
+  },
+  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecordScale": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.content.version": "1",
+   "@sap.label": "Pricing Scales",
+   "elements": {
+    "ConditionRecord": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Number of Condition Record",
+     "notNull": true
+    },
+    "ConditionSequentialNumber": {
+     "key": true,
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Sequent. No. of Cond",
+     "@sap.quickinfo": "Sequential number of the condition",
+     "notNull": true
+    },
+    "ConditionScaleLine": {
+     "key": true,
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Line number",
+     "@sap.quickinfo": "Current number of the line scale",
+     "notNull": true
+    },
+    "ConditionScaleQuantity": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unit": "ConditionScaleQuantityUnit",
+     "@sap.label": "Scale Quantity",
+     "@sap.quickinfo": "Condition Scale Quantity"
+    },
+    "ConditionScaleQuantityUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Scale Unit of Meas.",
+     "@sap.quickinfo": "Condition Scale Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionScaleAmount": {
+     "type": "cds.Decimal",
+     "precision": 16,
+     "scale": 3,
+     "@sap.unit": "ConditionScaleAmountCurrency",
+     "@sap.label": "Scale Value"
+    },
+    "ConditionScaleAmountCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Scale Currency",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionRateValue": {
+     "type": "cds.Decimal",
+     "precision": 12,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionRateValueUnit": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Unit (Currency or Percentage)",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionRateRatio": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionRateRatioUnit",
+     "@sap.label": "Ratio",
+     "@sap.quickinfo": "Condition Ratio (in Percent or Per Mille)"
+    },
+    "ConditionRateRatioUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionRateAmount": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionCurrency",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Unit (Currency or Percentage)",
+     "@sap.semantics": "currency-code"
+    },
+    "ETag": {
+     "type": "cds.String",
+     "length": 40
+    },
+    "to_SlsPrcgCndnRecdSuplmnt": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdSuplmnt",
+     "keys": []
+    },
+    "to_SlsPrcgConditionRecord": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecord",
+     "keys": []
+    }
+   }
+  },
+  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnSupplementText": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.content.version": "1",
+   "@sap.label": "Condition Supplement Descriptions",
+   "elements": {
+    "ConditionRecord": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Number of Condition Record",
+     "notNull": true
+    },
+    "ConditionSequentialNumber": {
+     "key": true,
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Sequent. No. of Cond",
+     "@sap.quickinfo": "Sequential number of the condition",
+     "notNull": true
+    },
+    "Language": {
+     "key": true,
+     "type": "cds.String",
+     "length": 2,
+     "@sap.label": "Language Key",
+     "notNull": true
+    },
+    "ConditionText": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.label": "Description"
+    },
+    "ETag": {
+     "type": "cds.String",
+     "length": 40
+    },
+    "to_SlsPrcgCndnRecdSuplmnt": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdSuplmnt",
+     "keys": []
+    }
+   }
+  },
+  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecord": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.content.version": "1",
+   "@sap.label": "Condition Records",
+   "elements": {
+    "ConditionRecord": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Number of Condition Record",
+     "notNull": true
+    },
+    "ConditionSequentialNumber": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Sequent. No. of Cond",
+     "@sap.quickinfo": "Sequential number of the condition"
+    },
+    "ConditionTable": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Table"
+    },
+    "ConditionApplication": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Application"
+    },
+    "ConditionType": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Type"
+    },
+    "ConditionValidityEndDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Valid To",
+     "@sap.quickinfo": "Valid To Date"
+    },
+    "ConditionValidityStartDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Valid From",
+     "@sap.quickinfo": "Valid-From Date"
+    },
+    "CreatedByUser": {
+     "type": "cds.String",
+     "length": 12,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Created By",
+     "@sap.quickinfo": "Name of Person Responsible for Creating the Object"
+    },
+    "CreationDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Created On",
+     "@sap.quickinfo": "Record Creation Date"
+    },
+    "ConditionTextID": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Text number",
+     "@sap.quickinfo": "Number of texts"
+    },
+    "PricingScaleType": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Scale Type"
+    },
+    "PricingScaleBasis": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Scale Base Type"
+    },
+    "ConditionScaleQuantity": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unit": "ConditionScaleQuantityUnit",
+     "@sap.label": "Scale Quantity",
+     "@sap.quickinfo": "Condition Scale Quantity"
+    },
+    "ConditionScaleQuantityUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Scale Unit of Meas.",
+     "@sap.quickinfo": "Condition Scale Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionScaleAmount": {
+     "type": "cds.Decimal",
+     "precision": 16,
+     "scale": 3,
+     "@sap.unit": "ConditionScaleAmountCurrency",
+     "@sap.label": "Scale Value"
+    },
+    "ConditionScaleAmountCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Scale Currency",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionCalculationType": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Calculation Type",
+     "@sap.quickinfo": "Calculation Type for Condition"
+    },
+    "ConditionRateValue": {
+     "type": "cds.Decimal",
+     "precision": 12,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Condition Amount",
+     "@sap.quickinfo": "Condition amount or percentage where no scale exists"
+    },
+    "ConditionRateValueUnit": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Unit (Currency or Percentage)",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionRateRatio": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionRateRatioUnit",
+     "@sap.label": "Ratio",
+     "@sap.quickinfo": "Condition Ratio (in Percent or Per Mille)"
+    },
+    "ConditionRateRatioUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionRateAmount": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionCurrency",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Unit (Currency or Percentage)",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionQuantity": {
+     "type": "cds.Decimal",
+     "precision": 5,
+     "scale": 0,
+     "@sap.unit": "ConditionQuantityUnit",
+     "@sap.label": "Pricing Unit",
+     "@sap.quickinfo": "Condition Pricing Unit"
+    },
+    "ConditionQuantityUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Unit of Measure",
+     "@sap.quickinfo": "Condition Unit",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionToBaseQtyNmrtr": {
+     "type": "cds.Decimal",
+     "precision": 5,
+     "scale": 0,
+     "@sap.label": "NumeratorForConvers.",
+     "@sap.quickinfo": "Numerator for converting condition units to base units"
+    },
+    "ConditionToBaseQtyDnmntr": {
+     "type": "cds.Decimal",
+     "precision": 5,
+     "scale": 0,
+     "@sap.label": "Denom.for Conversion",
+     "@sap.quickinfo": "Denominator for converting condition units to base units"
+    },
+    "BaseUnit": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.label": "Base Unit of Measure",
+     "@sap.semantics": "unit-of-measure"
+    },
+    "ConditionLowerLimit": {
+     "type": "cds.Decimal",
+     "precision": 12,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Lower limit",
+     "@sap.quickinfo": "Lower limit of the condition rate/amount"
+    },
+    "ConditionLowerLimitAmount": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionCurrency",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionLowerLimitRatio": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionRateRatioUnit",
+     "@sap.label": "Ratio",
+     "@sap.quickinfo": "Condition Ratio (in Percent or Per Mille)"
+    },
+    "ConditionUpperLimit": {
+     "type": "cds.Decimal",
+     "precision": 12,
+     "scale": 3,
+     "@sap.unit": "ConditionRateValueUnit",
+     "@sap.label": "Upper limit",
+     "@sap.quickinfo": "Upper limit for the condition rate"
+    },
+    "ConditionUpperLimitAmount": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionCurrency",
+     "@sap.label": "Amount",
+     "@sap.quickinfo": "Condition Amount or Percentage"
+    },
+    "ConditionUpperLimitRatio": {
+     "type": "cds.Decimal",
+     "precision": 24,
+     "scale": 9,
+     "@sap.unit": "ConditionRateRatioUnit",
+     "@sap.label": "Ratio",
+     "@sap.quickinfo": "Condition Ratio (in Percent or Per Mille)"
+    },
+    "ConditionAlternativeCurrency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Currency",
+     "@sap.quickinfo": "Condition Currency (for Cumulation Fields)",
+     "@sap.semantics": "currency-code"
+    },
+    "ConditionExclusion": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Exclusion",
+     "@sap.quickinfo": "Condition exclusion indicator"
+    },
+    "ConditionIsDeleted": {
+     "type": "cds.Boolean",
+     "@sap.label": "Deletion Indicator",
+     "@sap.quickinfo": "Deletion Indicator for Condition Record"
+    },
+    "AdditionalValueDays": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Addit. Value Days",
+     "@sap.quickinfo": "Additional Value Days"
+    },
+    "FixedValueDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "Fixed Value Date"
+    },
+    "PaymentTerms": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Terms of Payment",
+     "@sap.quickinfo": "Key for Terms of Payment"
+    },
+    "CndnMaxNumberOfSalesOrders": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Max.number.of.orders",
+     "@sap.quickinfo": "Maximum number of sales orders per condition record"
+    },
+    "MinimumConditionBasisValue": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unit": "ConditionQuantityUnit",
+     "@sap.label": "Min.cond.base value",
+     "@sap.quickinfo": "Minimum condition base value"
+    },
+    "MaximumConditionBasisValue": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unit": "ConditionQuantityUnit",
+     "@sap.label": "Max.cond.base value",
+     "@sap.quickinfo": "Maximum condition base value"
+    },
+    "MaximumConditionAmount": {
+     "type": "cds.Decimal",
+     "precision": 14,
+     "scale": 3,
+     "@sap.unit": "ConditionAlternativeCurrency",
+     "@sap.label": "Max.condition value",
+     "@sap.quickinfo": "Maximum condition value"
+    },
+    "IncrementalScale": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Incremental scale",
+     "@sap.quickinfo": "Number of incremental scale"
+    },
+    "PricingScaleLine": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Pricing scale",
+     "@sap.quickinfo": "Scale number for pricing"
+    },
+    "ConditionReleaseStatus": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Release Status"
+    },
+    "SalesPriceApprovalRequest": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Approval Request",
+     "@sap.quickinfo": "Approval Request for Price Conditions"
+    },
+    "ConditionChangeReason": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Cndn Change Reason",
+     "@sap.quickinfo": "Reason for Changing Condition Record"
+    },
+    "PrevApprovedConditionRecord": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Previously Approved Condition Record"
+    },
+    "ConditionTaxCode": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Tax Code",
+     "@sap.quickinfo": "Tax on Sales/Purchases Code"
+    },
+    "ConditionWithholdingTaxCode": {
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "W/Tax Code",
+     "@sap.quickinfo": "Withholding Tax Code"
+    },
+    "TaxExemptionLicense": {
+     "type": "cds.String",
+     "length": 24,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "License Number",
+     "@sap.quickinfo": "Tax Exemption License Number"
+    },
+    "LicenseGrantDate": {
+     "type": "cds.Date",
+     "@sap.display.format": "Date",
+     "@sap.label": "License Date",
+     "@sap.quickinfo": "Date License Granted"
+    },
+    "LastChangeDateTime": {
+     "type": "cds.Timestamp",
+     "@odata.Type": "Edm.DateTimeOffset",
+     "@odata.Precision": 7,
+     "@sap.label": "Time Stamp",
+     "@sap.quickinfo": "UTC Time Stamp in Long Form (YYYYMMDDhhmmssmmmuuun)"
+    },
+    "SAPObjectNodeType": {
+     "type": "cds.String",
+     "length": 30,
+     "@sap.label": "SONT Name",
+     "@sap.quickinfo": "RAP SOT: SAP Object Node Type",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ETag": {
+     "type": "cds.String",
+     "length": 40
+    },
+    "to_SlsPrcgCndnRecdSuplmnt": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdSuplmnt",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "to_SlsPrcgCndnRecdValidity": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecdValidity",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "to_SlsPrcgCndnRecordScale": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgCndnRecordScale",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "to_SlsPrcgConditionRecordText": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecordText",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    }
+   }
+  },
+  "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecordText": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.content.version": "1",
+   "@sap.label": "Condition Record Descriptions",
+   "elements": {
+    "ConditionRecord": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.display.format": "UpperCase",
+     "@sap.label": "Condition Record No.",
+     "@sap.quickinfo": "Number of Condition Record",
+     "notNull": true
+    },
+    "ConditionSequentialNumber": {
+     "key": true,
+     "type": "cds.String",
+     "length": 2,
+     "@sap.display.format": "NonNegative",
+     "@sap.label": "Sequent. No. of Cond",
+     "@sap.quickinfo": "Sequential number of the condition",
+     "notNull": true
+    },
+    "Language": {
+     "key": true,
+     "type": "cds.String",
+     "length": 2,
+     "@sap.label": "Language Key",
+     "notNull": true
+    },
+    "ConditionText": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.label": "Description"
+    },
+    "ETag": {
+     "type": "cds.String",
+     "length": 40
+    },
+    "to_SlsPrcgConditionRecord": {
+     "type": "cds.Association",
+     "target": "API_SLSPRICINGCONDITIONRECORD_SRV.A_SlsPrcgConditionRecord",
+     "keys": []
     }
    }
   }

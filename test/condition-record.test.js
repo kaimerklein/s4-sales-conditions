@@ -1,41 +1,60 @@
 const cds = require('@sap/cds');
 
-const MOCK_RECORDS = [
+// Mock validity records with nested to_SlsPrcgConditionRecord
+const MOCK_VALIDITY_RECORDS = [
   {
     ConditionRecord: 'CR001',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionValidityStartDate: '2024-01-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 100.0,
-    ConditionRateValueUnit: 'EUR',
-    WorkAgreement: 'WA-0001',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PCP0',
+    Personnel: 'WA-0001',
     Customer: 'CUST01',
+    EngagementProject: 'PRJ001',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR001',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '304',
+      ConditionType: 'PCP0',
+      ConditionRateValue: 100.0,
+      ConditionRateValueUnit: 'EUR',
+      ConditionCurrency: 'EUR',
+    },
   },
   {
     ConditionRecord: 'CR002',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionValidityStartDate: '2024-03-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 200.0,
-    ConditionRateValueUnit: 'USD',
-    WorkAgreement: 'WA-0002',
+    ConditionValidityStartDate: '2024-03-01',
+    ConditionType: 'PCP0',
+    Personnel: 'WA-0002',
     Customer: 'CUST02',
+    EngagementProject: '',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR002',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '304',
+      ConditionType: 'PCP0',
+      ConditionRateValue: 200.0,
+      ConditionRateValueUnit: 'USD',
+      ConditionCurrency: 'USD',
+    },
   },
   {
     ConditionRecord: 'CR003',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '305',
-    ConditionType: 'PR00',
-    ConditionValidityStartDate: '2024-01-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 50.0,
-    ConditionRateValueUnit: 'EUR',
-    WorkAgreement: 'WA-0001',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PR00',
+    Personnel: 'WA-0001',
     Customer: 'CUST01',
+    EngagementProject: '',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR003',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '305',
+      ConditionType: 'PR00',
+      ConditionRateValue: 50.0,
+      ConditionRateValueUnit: 'EUR',
+      ConditionCurrency: 'EUR',
+    },
   },
 ];
 
@@ -66,19 +85,17 @@ describe('condition-record lib', () => {
   let getConditionRecords;
 
   beforeAll(() => {
-    // Create a mock service object with entities and run method
     const mockService = {
       entities: {
-        A_SlsPrcgConditionRecord: 'A_SlsPrcgConditionRecord',
+        A_SlsPrcgCndnRecdValidity: 'A_SlsPrcgCndnRecdValidity',
       },
       run: jest.fn(async (query) => {
         const where = query?.SELECT?.where;
-        if (!where) return [...MOCK_RECORDS];
-        return MOCK_RECORDS.filter((r) => matchesWhere(r, where));
+        if (!where) return [...MOCK_VALIDITY_RECORDS];
+        return MOCK_VALIDITY_RECORDS.filter((r) => matchesWhere(r, where));
       }),
     };
 
-    // Override cds.connect.to to return our mock
     const originalConnect = cds.connect.to.bind(cds.connect);
     jest.spyOn(cds.connect, 'to').mockImplementation(async (name) => {
       if (name === 'API_SLSPRICINGCONDITIONRECORD_SRV') return mockService;
@@ -92,11 +109,12 @@ describe('condition-record lib', () => {
     jest.restoreAllMocks();
   });
 
-  it('filters by workAgreementId and returns only PCP0 records', async () => {
+  it('filters by workAgreementId (Personnel) and returns only PCP0 records', async () => {
     const results = await getConditionRecords({ workAgreementId: 'WA-0001' });
     expect(results.length).toBe(1);
     expect(results[0].ConditionRecord).toBe('CR001');
     expect(results[0].ConditionType).toBe('PCP0');
+    expect(results[0].Personnel).toBe('WA-0001');
   });
 
   it('filters by customer and returns only PCP0 records', async () => {
@@ -112,6 +130,18 @@ describe('condition-record lib', () => {
     });
     expect(results.length).toBe(1);
     expect(results[0].ConditionRecord).toBe('CR001');
+  });
+
+  it('flattens validity + condition record fields', async () => {
+    const results = await getConditionRecords({ workAgreementId: 'WA-0001' });
+    const r = results[0];
+    expect(r.ConditionSequentialNumber).toBe('01');
+    expect(r.ConditionTable).toBe('304');
+    expect(r.ConditionRateValue).toBe(100.0);
+    expect(r.ConditionRateValueUnit).toBe('EUR');
+    expect(r.ConditionCurrency).toBe('EUR');
+    expect(r.Customer).toBe('CUST01');
+    expect(r.EngagementProject).toBe('PRJ001');
   });
 
   it('throws when neither filter is provided', async () => {

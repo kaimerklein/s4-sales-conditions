@@ -1,29 +1,42 @@
 const cds = require('@sap/cds');
 
-const MOCK_RECORDS = [
+// Mock validity records with nested condition record data
+const MOCK_VALIDITY_RECORDS = [
   {
     ConditionRecord: 'CR001',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionValidityStartDate: '2024-01-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 100.0,
-    ConditionRateValueUnit: 'EUR',
-    WorkAgreement: 'WA-0001',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PCP0',
+    Personnel: 'WA-0001',
     Customer: 'CUST01',
+    EngagementProject: 'PRJ001',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR001',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '304',
+      ConditionType: 'PCP0',
+      ConditionRateValue: 100.0,
+      ConditionRateValueUnit: 'EUR',
+      ConditionCurrency: 'EUR',
+    },
   },
   {
     ConditionRecord: 'CR002',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionValidityStartDate: '2024-03-01',
     ConditionValidityEndDate: '2024-12-31',
-    ConditionRateValue: 200.0,
-    ConditionRateValueUnit: 'USD',
-    WorkAgreement: 'WA-0002',
+    ConditionValidityStartDate: '2024-03-01',
+    ConditionType: 'PCP0',
+    Personnel: 'WA-0002',
     Customer: 'CUST02',
+    EngagementProject: '',
+    to_SlsPrcgConditionRecord: {
+      ConditionRecord: 'CR002',
+      ConditionSequentialNumber: '01',
+      ConditionTable: '304',
+      ConditionType: 'PCP0',
+      ConditionRateValue: 200.0,
+      ConditionRateValueUnit: 'USD',
+      ConditionCurrency: 'USD',
+    },
   },
 ];
 
@@ -57,12 +70,12 @@ function matchesWhere(record, where) {
 
 const mockConditionService = {
   entities: {
-    A_SlsPrcgConditionRecord: 'A_SlsPrcgConditionRecord',
+    A_SlsPrcgCndnRecdValidity: 'A_SlsPrcgCndnRecdValidity',
   },
   run: jest.fn(async (query) => {
     const where = query?.SELECT?.where;
-    if (!where) return [...MOCK_RECORDS];
-    return MOCK_RECORDS.filter((r) => matchesWhere(r, where));
+    if (!where) return [...MOCK_VALIDITY_RECORDS];
+    return MOCK_VALIDITY_RECORDS.filter((r) => matchesWhere(r, where));
   }),
 };
 
@@ -99,21 +112,21 @@ describe('ConditionRecords entity – annotations', () => {
   });
 
   it('has @UI.LineItem annotations', async () => {
-    const compiled = await cds.load(['srv/sales-condition-service', 'srv/sales-condition-annotations']);
+    const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
     const entity = compiled.definitions['SalesConditionService.ConditionRecords'];
     expect(entity['@UI.LineItem']).toBeDefined();
     expect(entity['@UI.LineItem'].length).toBeGreaterThan(0);
   });
 
   it('has @UI.SelectionFields annotations', async () => {
-    const compiled = await cds.load(['srv/sales-condition-service', 'srv/sales-condition-annotations']);
+    const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
     const entity = compiled.definitions['SalesConditionService.ConditionRecords'];
     expect(entity['@UI.SelectionFields']).toBeDefined();
-    expect(entity['@UI.SelectionFields'].length).toBe(2);
+    expect(entity['@UI.SelectionFields'].length).toBe(3);
   });
 
   it('has @UI.HeaderInfo annotations', async () => {
-    const compiled = await cds.load(['srv/sales-condition-service', 'srv/sales-condition-annotations']);
+    const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
     const entity = compiled.definitions['SalesConditionService.ConditionRecords'];
     expect(entity['@UI.HeaderInfo.TypeNamePlural']).toBe('Sales Price Conditions');
     expect(entity['@UI.HeaderInfo.TypeName']).toBe('Sales Price Condition');
