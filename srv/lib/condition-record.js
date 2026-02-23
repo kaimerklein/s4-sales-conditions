@@ -29,31 +29,22 @@ async function getConditionRecords({ workAgreementId, customer } = {}) {
   if (workAgreementId) filters.Personnel = workAgreementId;
   if (customer) filters.Customer = customer;
 
-  const query = SELECT.from(A_SlsPrcgCndnRecdValidity)
-    .where(filters)
-    .columns(col => {
-      col.ConditionRecord,
-      col.ConditionValidityEndDate,
-      col.ConditionValidityStartDate,
-      col.ConditionType,
-      col.Personnel,
-      col.Customer,
-      col.EngagementProject,
-      col.to_SlsPrcgConditionRecord(rec => {
-        rec.ConditionRecord,
-        rec.ConditionSequentialNumber,
-        rec.ConditionTable,
-        rec.ConditionType,
-        rec.ConditionRateValue,
-        rec.ConditionRateValueUnit,
-        rec.ConditionCurrency
-      })
-    });
+  const results = await srv.run(
+    SELECT.from(A_SlsPrcgCndnRecdValidity).where(filters)
+  );
 
-  const results = await srv.run(query);
+  if (!results.length) return [];
+
+  // Fetch associated condition records for each validity entry
+  const { A_SlsPrcgConditionRecord } = srv.entities;
+  const conditionRecordIds = [...new Set(results.map(v => v.ConditionRecord))];
+  const condRecords = await srv.run(
+    SELECT.from(A_SlsPrcgConditionRecord).where({ ConditionRecord: { in: conditionRecordIds } })
+  );
+  const recMap = Object.fromEntries(condRecords.map(r => [r.ConditionRecord, r]));
 
   return results.map(v => {
-    const rec = v.to_SlsPrcgConditionRecord || {};
+    const rec = recMap[v.ConditionRecord] || {};
     return {
       ConditionRecord: v.ConditionRecord,
       ConditionSequentialNumber: rec.ConditionSequentialNumber || '',

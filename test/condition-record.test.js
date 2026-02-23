@@ -10,15 +10,6 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0001',
     Customer: 'CUST01',
     EngagementProject: 'PRJ001',
-    to_SlsPrcgConditionRecord: {
-      ConditionRecord: 'CR001',
-      ConditionSequentialNumber: '01',
-      ConditionTable: '304',
-      ConditionType: 'PCP0',
-      ConditionRateValue: 100.0,
-      ConditionRateValueUnit: 'EUR',
-      ConditionCurrency: 'EUR',
-    },
   },
   {
     ConditionRecord: 'CR002',
@@ -28,15 +19,6 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0002',
     Customer: 'CUST02',
     EngagementProject: '',
-    to_SlsPrcgConditionRecord: {
-      ConditionRecord: 'CR002',
-      ConditionSequentialNumber: '01',
-      ConditionTable: '304',
-      ConditionType: 'PCP0',
-      ConditionRateValue: 200.0,
-      ConditionRateValueUnit: 'USD',
-      ConditionCurrency: 'USD',
-    },
   },
   {
     ConditionRecord: 'CR003',
@@ -46,21 +28,42 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0001',
     Customer: 'CUST01',
     EngagementProject: '',
-    to_SlsPrcgConditionRecord: {
-      ConditionRecord: 'CR003',
-      ConditionSequentialNumber: '01',
-      ConditionTable: '305',
-      ConditionType: 'PR00',
-      ConditionRateValue: 50.0,
-      ConditionRateValueUnit: 'EUR',
-      ConditionCurrency: 'EUR',
-    },
+  },
+];
+
+const MOCK_CONDITION_RECORDS = [
+  {
+    ConditionRecord: 'CR001',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '304',
+    ConditionType: 'PCP0',
+    ConditionRateValue: 100.0,
+    ConditionRateValueUnit: 'EUR',
+    ConditionCurrency: 'EUR',
+  },
+  {
+    ConditionRecord: 'CR002',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '304',
+    ConditionType: 'PCP0',
+    ConditionRateValue: 200.0,
+    ConditionRateValueUnit: 'USD',
+    ConditionCurrency: 'USD',
+  },
+  {
+    ConditionRecord: 'CR003',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '305',
+    ConditionType: 'PR00',
+    ConditionRateValue: 50.0,
+    ConditionRateValueUnit: 'EUR',
+    ConditionCurrency: 'EUR',
   },
 ];
 
 /**
  * Simple matcher for CDS-style WHERE clause arrays against a record object.
- * Handles flat conjunctions: [{ref}, '=', {val}, 'and', {ref}, '=', {val}, ...]
+ * Handles flat conjunctions and `in` lists.
  */
 function matchesWhere(record, where) {
   let i = 0;
@@ -71,9 +74,14 @@ function matchesWhere(record, where) {
     const op = where[i + 1];
     const right = where[i + 2];
 
-    if (left?.ref && op === '=' && right?.val !== undefined) {
+    if (left?.ref && right?.val !== undefined) {
       const field = left.ref[0];
-      if (record[field] !== right.val) return false;
+      if (op === '=' && record[field] !== right.val) return false;
+    }
+    if (left?.ref && op === 'in' && Array.isArray(right?.list)) {
+      const field = left.ref[0];
+      const vals = right.list.map(x => x.val);
+      if (!vals.includes(record[field])) return false;
     }
 
     i += 3;
@@ -88,9 +96,17 @@ describe('condition-record lib', () => {
     const mockService = {
       entities: {
         A_SlsPrcgCndnRecdValidity: 'A_SlsPrcgCndnRecdValidity',
+        A_SlsPrcgConditionRecord: 'A_SlsPrcgConditionRecord',
       },
       run: jest.fn(async (query) => {
+        const from = query?.SELECT?.from?.ref?.[0] || query?.SELECT?.from;
         const where = query?.SELECT?.where;
+
+        if (from === 'A_SlsPrcgConditionRecord') {
+          if (!where) return [...MOCK_CONDITION_RECORDS];
+          return MOCK_CONDITION_RECORDS.filter((r) => matchesWhere(r, where));
+        }
+        // Default: validity records
         if (!where) return [...MOCK_VALIDITY_RECORDS];
         return MOCK_VALIDITY_RECORDS.filter((r) => matchesWhere(r, where));
       }),
