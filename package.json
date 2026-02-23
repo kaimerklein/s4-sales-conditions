@@ -49,5 +49,8 @@
   },
   "workspaces": [
     "app/*"
+  ],
+  "sapux": [
+    "app/pricing-app"
   ]
 }
