@@ -1,15 +1,14 @@
 const cds = require('@sap/cds');
 
-const CONDITION_TYPE_PCP0 = 'PCP0';
+const CONDITION_TYPES = ['PCP0', 'PSP0'];
 const SERVICE_NAME = 'API_SLSPRICINGCONDITIONRECORD_SRV';
 
 /**
- * Fetch sales pricing condition records (type PCP0) from the S/4 HANA
+ * Fetch sales pricing condition records (types PCP0, PSP0) from the S/4 HANA
  * remote OData service.
  *
  * Queries A_SlsPrcgCndnRecdValidity filtered by ConditionType, Personnel,
- * and/or Customer, then expands to_SlsPrcgConditionRecord to get full
- * condition record details.
+ * and/or Customer, then fetches associated condition records for details.
  *
  * @param {object} params
  * @param {string} [params.workAgreementId] - Personnel / work agreement ID
@@ -25,13 +24,12 @@ async function getConditionRecords({ workAgreementId, customer } = {}) {
   const srv = await cds.connect.to(SERVICE_NAME);
   const { A_SlsPrcgCndnRecdValidity } = srv.entities;
 
-  const filters = { ConditionType: CONDITION_TYPE_PCP0 };
-  if (workAgreementId) filters.Personnel = workAgreementId;
-  if (customer) filters.Customer = customer;
+  const query = SELECT.from(A_SlsPrcgCndnRecdValidity)
+    .where({ ConditionType: { in: CONDITION_TYPES } });
+  if (workAgreementId) query.and({ Personnel: workAgreementId });
+  if (customer) query.and({ Customer: customer });
 
-  const results = await srv.run(
-    SELECT.from(A_SlsPrcgCndnRecdValidity).where(filters)
-  );
+  const results = await srv.run(query);
 
   if (!results.length) return [];
 

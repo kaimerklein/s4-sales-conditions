@@ -23,6 +23,15 @@ const MOCK_VALIDITY_RECORDS = [
   {
     ConditionRecord: 'CR003',
     ConditionValidityEndDate: '2024-12-31',
+    ConditionValidityStartDate: '2024-06-01',
+    ConditionType: 'PSP0',
+    Personnel: 'WA-0001',
+    Customer: '',
+    EngagementProject: 'PRJ002',
+  },
+  {
+    ConditionRecord: 'CR004',
+    ConditionValidityEndDate: '2024-12-31',
     ConditionValidityStartDate: '2024-01-01',
     ConditionType: 'PR00',
     Personnel: 'WA-0001',
@@ -52,6 +61,15 @@ const MOCK_CONDITION_RECORDS = [
   },
   {
     ConditionRecord: 'CR003',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '305',
+    ConditionType: 'PSP0',
+    ConditionRateValue: 150.0,
+    ConditionRateValueUnit: 'EUR',
+    ConditionCurrency: 'EUR',
+  },
+  {
+    ConditionRecord: 'CR004',
     ConditionSequentialNumber: '01',
     ConditionTable: '305',
     ConditionType: 'PR00',
@@ -125,15 +143,17 @@ describe('condition-record lib', () => {
     jest.restoreAllMocks();
   });
 
-  it('filters by workAgreementId (Personnel) and returns only PCP0 records', async () => {
+  it('filters by workAgreementId (Personnel) and returns PCP0 and PSP0 records', async () => {
     const results = await getConditionRecords({ workAgreementId: 'WA-0001' });
-    expect(results.length).toBe(1);
+    expect(results.length).toBe(2);
     expect(results[0].ConditionRecord).toBe('CR001');
     expect(results[0].ConditionType).toBe('PCP0');
     expect(results[0].Personnel).toBe('WA-0001');
+    expect(results[1].ConditionRecord).toBe('CR003');
+    expect(results[1].ConditionType).toBe('PSP0');
   });
 
-  it('filters by customer and returns only PCP0 records', async () => {
+  it('filters by customer and returns only matching records', async () => {
     const results = await getConditionRecords({ customer: 'CUST02' });
     expect(results.length).toBe(1);
     expect(results[0].ConditionRecord).toBe('CR002');
