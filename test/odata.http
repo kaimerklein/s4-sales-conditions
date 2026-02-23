@@ -1,6 +1,5 @@
 
-# Basic Auth for Dev System
-@auth=
+# auth and baseUrl are stored in environment variables in .vscode/settings.json
 
 ### Get Employee - P_KeyDate mandatory
 # GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_TT_PERSONWORKAGREEMENT_CDS/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'1979-01-01T00:00:00')/Set?$filter=substringof('38',PersonWorkAgreementExternalID)&$format=json
@@ -36,6 +35,10 @@ Authorization: {{auth}}
 
 ### Condition Valdity - PCP0 - Projekt - EngagementProject --> Personnel
 GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PCP0' and EngagementProject eq '2025E001774'&$expand=to_SlsPrcgConditionRecord
+Authorization: {{auth}}
+
+### Condition Valdity - PCP0 - Projekt - EngagementProject --> Personnel
+GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PCP0' and WorkAgreement eq '50028628'&$expand=to_SlsPrcgConditionRecord
 Authorization: {{auth}}
 
 ### Business Partner (Mandant)
