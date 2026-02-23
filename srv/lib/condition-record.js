@@ -11,14 +11,17 @@ const SERVICE_NAME = 'API_SLSPRICINGCONDITIONRECORD_SRV';
  * and/or Customer, then fetches associated condition records for details.
  *
  * @param {object} params
- * @param {string} [params.workAgreementId] - Personnel / work agreement ID
+ * @param {string|string[]} [params.workAgreementIds] - Personnel / work agreement ID(s)
  * @param {string} [params.customer] - Filter by customer number
  * @returns {Promise<object[]>} Matching condition records (flattened)
- * @throws {Error} If neither workAgreementId nor customer is provided
+ * @throws {Error} If neither workAgreementIds nor customer is provided
  */
-async function getConditionRecords({ workAgreementId, customer } = {}) {
-  if (!workAgreementId && !customer) {
-    throw new Error('At least one filter is required: workAgreementId or customer');
+async function getConditionRecords({ workAgreementIds, customer } = {}) {
+  const ids = Array.isArray(workAgreementIds) ? workAgreementIds
+    : workAgreementIds ? [workAgreementIds] : [];
+
+  if (!ids.length && !customer) {
+    throw new Error('At least one filter is required: workAgreementIds or customer');
   }
 
   const srv = await cds.connect.to(SERVICE_NAME);
@@ -26,7 +29,7 @@ async function getConditionRecords({ workAgreementId, customer } = {}) {
 
   const query = SELECT.from(A_SlsPrcgCndnRecdValidity)
     .where({ ConditionType: { in: CONDITION_TYPES } });
-  if (workAgreementId) query.and({ Personnel: workAgreementId });
+  if (ids.length) query.and({ Personnel: { in: ids } });
   if (customer) query.and({ Customer: customer });
 
   const results = await srv.run(query);

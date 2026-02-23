@@ -11,16 +11,16 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
         return req.reject(400, 'At least one filter is required: workerId or customer');
       }
 
-      let workAgreementId;
+      let workAgreementIds;
       if (workerId) {
         const mappings = await getWorkAgreement(workerId);
         if (!mappings) {
           return req.reject(404, `No work agreement found for worker ID "${workerId}"`);
         }
-        workAgreementId = mappings[0].workAgreementId;
+        workAgreementIds = mappings.map(m => m.workAgreementId);
       }
 
-      return getConditionRecords({ workAgreementId, customer });
+      return getConditionRecords({ workAgreementIds, customer });
     });
 
     this.on('READ', 'ConditionRecords', async (req) => {
@@ -30,17 +30,17 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
         return [];
       }
 
-      let workAgreementId;
+      let workAgreementIds;
       if (filters.WorkerId) {
         const mappings = await getWorkAgreement(filters.WorkerId);
         if (!mappings) {
           return req.reject(404, `No work agreement found for worker ID "${filters.WorkerId}"`);
         }
-        workAgreementId = mappings[0].workAgreementId;
+        workAgreementIds = mappings.map(m => m.workAgreementId);
       }
 
       const records = await getConditionRecords({
-        workAgreementId,
+        workAgreementIds,
         customer: filters.Customer,
       });
 

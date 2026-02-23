@@ -144,7 +144,7 @@ describe('condition-record lib', () => {
   });
 
   it('filters by workAgreementId (Personnel) and returns PCP0 and PSP0 records', async () => {
-    const results = await getConditionRecords({ workAgreementId: 'WA-0001' });
+    const results = await getConditionRecords({ workAgreementIds: 'WA-0001' });
     expect(results.length).toBe(2);
     expect(results[0].ConditionRecord).toBe('CR001');
     expect(results[0].ConditionType).toBe('PCP0');
@@ -161,7 +161,7 @@ describe('condition-record lib', () => {
 
   it('filters by both workAgreementId and customer', async () => {
     const results = await getConditionRecords({
-      workAgreementId: 'WA-0001',
+      workAgreementIds: 'WA-0001',
       customer: 'CUST01',
     });
     expect(results.length).toBe(1);
@@ -169,7 +169,7 @@ describe('condition-record lib', () => {
   });
 
   it('flattens validity + condition record fields', async () => {
-    const results = await getConditionRecords({ workAgreementId: 'WA-0001' });
+    const results = await getConditionRecords({ workAgreementIds: 'WA-0001' });
     const r = results[0];
     expect(r.ConditionSequentialNumber).toBe('01');
     expect(r.ConditionTable).toBe('304');
@@ -192,8 +192,17 @@ describe('condition-record lib', () => {
     );
   });
 
+  it('supports multiple work agreement IDs', async () => {
+    const results = await getConditionRecords({ workAgreementIds: ['WA-0001', 'WA-0002'] });
+    expect(results.length).toBe(3);
+    const ids = results.map(r => r.ConditionRecord);
+    expect(ids).toContain('CR001');
+    expect(ids).toContain('CR002');
+    expect(ids).toContain('CR003');
+  });
+
   it('returns empty array when no records match', async () => {
-    const results = await getConditionRecords({ workAgreementId: 'WA-9999' });
+    const results = await getConditionRecords({ workAgreementIds: 'WA-9999' });
     expect(results).toEqual([]);
   });
 });
