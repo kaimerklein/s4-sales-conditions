@@ -21,8 +21,8 @@ async function getConditionRecords({ workAgreementIds, customer, engagementProje
   const ids = Array.isArray(workAgreementIds) ? workAgreementIds
     : workAgreementIds ? [workAgreementIds] : [];
 
-  if (!ids.length && !customer) {
-    throw new Error('At least one filter is required: workAgreementIds or customer');
+  if (!ids.length && !customer && !engagementProject) {
+    throw new Error('At least one filter is required: workAgreementIds, customer, or engagementProject');
   }
 
   const srv = await cds.connect.to(SERVICE_NAME);

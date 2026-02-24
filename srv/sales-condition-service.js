@@ -26,7 +26,7 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
     this.on('READ', 'ConditionRecords', async (req) => {
       const filters = _extractFilters(req.query.SELECT.where);
 
-      if (!filters.WorkerId && !filters.Customer) {
+      if (!filters.WorkerId && !filters.Customer && !filters.EngagementProject) {
         return [];
       }
 
