@@ -2,43 +2,43 @@
 # auth and baseUrl are stored in environment variables in .vscode/settings.json
 
 ### Get Employee - P_KeyDate mandatory
-# GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_TT_PERSONWORKAGREEMENT_CDS/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'1979-01-01T00:00:00')/Set?$filter=substringof('38',PersonWorkAgreementExternalID)&$format=json
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_TT_PERSONWORKAGREEMENT_CDS/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'2026-01-01T00:00:00')/Set?$filter=PersonWorkAgreementExternalID eq '38139'&$format=json
+# GET {{baseUrl}}/sap/opu/odata/sap/YY1_TT_PERSONWORKAGREEMENT_CDS/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'1979-01-01T00:00:00')/Set?$filter=substringof('38',PersonWorkAgreementExternalID)&$format=json
+GET {{baseUrl}}/sap/opu/odata/sap/YY1_TT_PERSONWORKAGREEMENT_CDS/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'2026-01-01T00:00:00')/Set?$filter=PersonWorkAgreementExternalID eq '38139'&$format=json
 Authorization: {{auth}}
 
 ###
 
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/SHCM/EMPLOYEE_SRV/EmployeeCollection
+GET {{baseUrl}}/sap/opu/odata/SHCM/EMPLOYEE_SRV/EmployeeCollection
 Authorization: {{auth}}
 
 ###
 
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/SHCM/EMPLOYEE_SRV/
+GET {{baseUrl}}/sap/opu/odata/SHCM/EMPLOYEE_SRV/
 Authorization: {{auth}}
 
 
 ### Condition Records - Metadata
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/$metadata
+GET {{baseUrl}}/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/$metadata
 Authorization: {{auth}}
 
 ### Get Condition Records - PSP0 - 993 (Mandantengruppe), 994 (Auftragsart), 997 (Auftragsartengruppe)
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgConditionRecord?$top=5&$format=json&$filter=ConditionType eq 'PSP0' and ConditionTable eq '993'&$expand=to_SlsPrcgCndnRecdValidity
+GET {{baseUrl}}/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgConditionRecord?$top=5&$format=json&$filter=ConditionType eq 'PSP0' and ConditionTable eq '993'&$expand=to_SlsPrcgCndnRecdValidity
 Authorization: {{auth}}
 
 ### Condition Validity - PSP0 - Customer
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PSP0' and Customer eq '1019438'&$expand=to_SlsPrcgConditionRecord
+GET {{baseUrl}}/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PSP0' and Customer eq '1019438'&$expand=to_SlsPrcgConditionRecord
 Authorization: {{auth}}
 
 ### Condition Valdity - PSP0 - YY1_Mandantengruppe_PCI
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PSP0' and YY1_Mandantengruppe_PCI eq '1010027'&$expand=to_SlsPrcgConditionRecord
+GET {{baseUrl}}/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PSP0' and YY1_Mandantengruppe_PCI eq '1010027'&$expand=to_SlsPrcgConditionRecord
 Authorization: {{auth}}
 
 ### Condition Valdity - PCP0 - Projekt - EngagementProject --> Personnel
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PCP0' and EngagementProject eq '2025E001774'&$expand=to_SlsPrcgConditionRecord
+GET {{baseUrl}}/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PCP0' and EngagementProject eq '2025E001774'&$expand=to_SlsPrcgConditionRecord
 Authorization: {{auth}}
 
 ### Condition Valdity - PCP0 - Projekt - EngagementProject --> Personnel
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PCP0' and WorkAgreement eq '50028628'&$expand=to_SlsPrcgConditionRecord
+GET {{baseUrl}}/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV/A_SlsPrcgCndnRecdValidity?$top=10&$format=json&$filter=ConditionType eq 'PCP0' and WorkAgreement eq '50028628'&$expand=to_SlsPrcgConditionRecord
 Authorization: {{auth}}
 
 ### Business Partner (Mandant)
@@ -49,25 +49,25 @@ Authorization: {{auth}}
 # YY1_MandantengruppeCMD_bus ???
 # YY1_Mandantengruppe2_bus ???
 
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner?$filter=YY1_Mandantengruppe2_bus eq '3010824'&$format=json
+GET {{baseUrl}}/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner?$filter=YY1_Mandantengruppe2_bus eq '3010824'&$format=json
 Authorization: {{auth}}
 
 
 ### Customer Project Service Metadata
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/CPD/SC_EXTERNAL_SERVICES_SRV/$metadata
+GET {{baseUrl}}/sap/opu/odata/CPD/SC_EXTERNAL_SERVICES_SRV/$metadata
 Authorization: {{auth}}
 
 
 ### Customer Project - ProjectID, Customer
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/CPD/SC_EXTERNAL_SERVICES_SRV/ProjectSet?$filter=ProjectID eq '2025E001774'&$top=10&$format=json
+GET {{baseUrl}}/sap/opu/odata/CPD/SC_EXTERNAL_SERVICES_SRV/ProjectSet?$filter=ProjectID eq '2025E001774'&$top=10&$format=json
 Authorization: {{auth}}
 
 ###
 
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_RSM_WORKAGRMNT_VAL_IE_CDS/$metadata
+GET {{baseUrl}}/sap/opu/odata/sap/YY1_RSM_WORKAGRMNT_VAL_IE_CDS/$metadata
 Authorization: {{auth}}
 
 ###
 
-GET https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_RSM_WORKAGRMNT_VAL_IE_CDS/YY1_RSM_WORKAGRMNT_VAL_IE?$top=10&$filter=PersonWorkAgreementExternalID eq '38139'
+GET {{baseUrl}}/sap/opu/odata/sap/YY1_RSM_WORKAGRMNT_VAL_IE_CDS/YY1_RSM_WORKAGRMNT_VAL_IE?$top=10&$filter=PersonWorkAgreementExternalID eq '38139'
 Authorization: {{auth}}
