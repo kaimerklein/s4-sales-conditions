@@ -13,10 +13,11 @@ const SERVICE_NAME = 'API_SLSPRICINGCONDITIONRECORD_SRV';
  * @param {object} params
  * @param {string|string[]} [params.workAgreementIds] - Personnel / work agreement ID(s)
  * @param {string} [params.customer] - Filter by customer number
+ * @param {string} [params.engagementProject] - Filter by engagement project
  * @returns {Promise<object[]>} Matching condition records (flattened)
  * @throws {Error} If neither workAgreementIds nor customer is provided
  */
-async function getConditionRecords({ workAgreementIds, customer } = {}) {
+async function getConditionRecords({ workAgreementIds, customer, engagementProject } = {}) {
   const ids = Array.isArray(workAgreementIds) ? workAgreementIds
     : workAgreementIds ? [workAgreementIds] : [];
 
@@ -31,6 +32,7 @@ async function getConditionRecords({ workAgreementIds, customer } = {}) {
     .where({ ConditionType: { in: CONDITION_TYPES } });
   if (ids.length) query.and({ Personnel: { in: ids } });
   if (customer) query.and({ Customer: customer });
+  if (engagementProject) query.and({ EngagementProject: engagementProject });
 
   const results = await srv.run(query);
 

@@ -42,6 +42,7 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
       const records = await getConditionRecords({
         workAgreementIds,
         customer: filters.Customer,
+        engagementProject: filters.EngagementProject,
       });
 
       return records.map((r) => ({ ...r, WorkerId: filters.WorkerId || '' }));
