@@ -20,6 +20,21 @@ annotate service.Employees with @(
         { $Type : 'UI.DataField', Value : CompanyCodeName,  Label : 'Company' },
         { $Type : 'UI.DataField', Value : ConditionCount,  Label : 'Conditions' }
     ],
+    UI.HeaderFacets : [
+        {
+            $Type  : 'UI.ReferenceFacet',
+            ID     : 'EmployeeHeaderFacet',
+            Target : '@UI.FieldGroup#EmployeeDetails',
+        },
+    ],
+    UI.FieldGroup #EmployeeDetails : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            { $Type : 'UI.DataField', Value : EmployeeName,    Label : 'Employee Name' },
+            { $Type : 'UI.DataField', Value : CostCenter,      Label : 'Cost Center' },
+            { $Type : 'UI.DataField', Value : CompanyCodeName,  Label : 'Company' },
+        ],
+    },
     UI.Facets : [
         {
             $Type  : 'UI.ReferenceFacet',

@@ -163,6 +163,13 @@ const mockEmployeeService = {
     if (!where) return [...EMPLOYEE_FIXTURE];
     return EMPLOYEE_FIXTURE.filter((r) => matchesWhere(r, where));
   }),
+  send: jest.fn(async (_method, path) => {
+    // Parse PersonWorkAgreement eq '...' filters from the path
+    const matches = [...path.matchAll(/PersonWorkAgreement eq '([^']+)'/g)];
+    if (!matches.length) return [...EMPLOYEE_FIXTURE];
+    const ids = matches.map(m => m[1]);
+    return EMPLOYEE_FIXTURE.filter(r => ids.includes(r.PersonWorkAgreement));
+  }),
 };
 
 const originalConnect = cds.connect.to.bind(cds.connect);

@@ -23,6 +23,7 @@ const mockWorkerService = {
 const mockEmployeeService = {
   entities: { YY1_TT_PersonWorkAgreement: 'YY1_TT_PersonWorkAgreement' },
   run: jest.fn(async () => []),
+  send: jest.fn(async () => []),
 };
 
 const originalConnect = cds.connect.to.bind(cds.connect);

@@ -6,6 +6,9 @@ const SERVICE_NAME = 'YY1_TT_PERSONWORKAGREEMENT_CDS';
  * Look up employee details (name, cost center) for a set of PersonWorkAgreement IDs
  * from the YY1_TT_PERSONWORKAGREEMENT_CDS parameterized entity.
  *
+ * The OData V2 service uses a parameterized pattern:
+ *   YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'...')/Set
+ *
  * @param {string[]} workAgreementIds - PersonWorkAgreement IDs to look up
  * @returns {Promise<Map<string, {name: string, costCenter: string, companyCode: string}>>}
  */
@@ -15,16 +18,22 @@ async function getEmployeeDetails(workAgreementIds) {
 
   try {
     const srv = await cds.connect.to(SERVICE_NAME);
-    const { YY1_TT_PersonWorkAgreement } = srv.entities;
 
-    const rows = await srv.run(
-      SELECT.from(YY1_TT_PersonWorkAgreement)
-        .where({ PersonWorkAgreement: { in: workAgreementIds } })
+    // Build the parameterized path with today's date
+    const today = new Date().toISOString().split('T')[0] + 'T00:00:00';
+    const filterParts = workAgreementIds.map(
+      id => `PersonWorkAgreement eq '${id}'`
     );
+    const filter = filterParts.join(' or ');
+    const path = `/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'${today}')/Set?$filter=${filter}`;
 
-    for (const row of rows) {
-      if (!result.has(row.PersonWorkAgreement)) {
-        result.set(row.PersonWorkAgreement, {
+    const rows = await srv.send('GET', path);
+
+    const list = Array.isArray(rows) ? rows : (rows?.value || []);
+    for (const row of list) {
+      const id = row.PersonWorkAgreement;
+      if (id && !result.has(id)) {
+        result.set(id, {
           name: row.PersonFullName || '',
           costCenter: row.CostCenter || '',
           companyCode: row.CompanyCode || '',
