@@ -8,6 +8,14 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
     this.on('READ', 'Employees', async (req) => {
       const filters = _extractMultiFilters(req.query.SELECT.where);
 
+      // Also extract key from single-entity reads: /Employees(WorkerId='...')
+      const fromRef = req.query.SELECT.from?.ref;
+      if (fromRef) {
+        for (const seg of fromRef) {
+          if (seg.where) _walkWhere(seg.where, filters);
+        }
+      }
+
       const hasFilter = filters.WorkerId.length || filters.Customer.length ||
                         filters.EngagementProject.length || filters.Mandantengruppe.length;
       if (!hasFilter) return [];
@@ -117,6 +125,14 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
 
     this.on('READ', 'EmployeeConditions', async (req) => {
       const filters = _extractMultiFilters(req.query.SELECT.where);
+
+      // Also extract key from navigation context: /Employees(WorkerId='...')/Conditions
+      const fromRef = req.query.SELECT.from?.ref;
+      if (fromRef) {
+        for (const seg of fromRef) {
+          if (seg.where) _walkWhere(seg.where, filters);
+        }
+      }
 
       // WorkerId is required (comes from navigation context)
       if (!filters.WorkerId.length) return [];
