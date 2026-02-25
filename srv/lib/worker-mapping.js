@@ -40,4 +40,66 @@ async function getWorkAgreement(workerId) {
   }));
 }
 
-module.exports = { getWorkAgreement };
+/**
+ * Batch lookup: resolve multiple worker IDs to their PersonWorkAgreements.
+ *
+ * @param {string[]} workerIds - Array of PersonWorkAgreementExternalIDs
+ * @returns {Promise<Map<string, Array<{workAgreementId: string, companyCode: string, companyCodeName: string}>>>}
+ */
+async function getWorkAgreements(workerIds) {
+  const result = new Map();
+  if (!workerIds || !workerIds.length) return result;
+
+  const srv = await cds.connect.to(SERVICE_NAME);
+  const { YY1_RSM_WORKAGRMNT_VAL_IE } = srv.entities;
+
+  const rows = await srv.run(
+    SELECT.from(YY1_RSM_WORKAGRMNT_VAL_IE)
+      .where({ PersonWorkAgreementExternalID: { in: workerIds } })
+  );
+
+  for (const r of rows) {
+    const wid = r.PersonWorkAgreementExternalID;
+    if (!result.has(wid)) result.set(wid, []);
+    const list = result.get(wid);
+    // Deduplicate by PersonWorkAgreement within each worker
+    if (!list.some(m => m.workAgreementId === r.PersonWorkAgreement)) {
+      list.push({
+        workAgreementId: r.PersonWorkAgreement,
+        companyCode: r.CompanyCode,
+        companyCodeName: r.CompanyCodeName,
+      });
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Reverse lookup: given PersonWorkAgreement IDs, find corresponding WorkerIds.
+ *
+ * @param {string[]} agreementIds - PersonWorkAgreement values
+ * @returns {Promise<Map<string, string>>} Map of PersonWorkAgreement → WorkerId
+ */
+async function getWorkerIdsByAgreements(agreementIds) {
+  const result = new Map();
+  if (!agreementIds || !agreementIds.length) return result;
+
+  const srv = await cds.connect.to(SERVICE_NAME);
+  const { YY1_RSM_WORKAGRMNT_VAL_IE } = srv.entities;
+
+  const rows = await srv.run(
+    SELECT.from(YY1_RSM_WORKAGRMNT_VAL_IE)
+      .where({ PersonWorkAgreement: { in: agreementIds } })
+  );
+
+  for (const r of rows) {
+    if (!result.has(r.PersonWorkAgreement)) {
+      result.set(r.PersonWorkAgreement, r.PersonWorkAgreementExternalID);
+    }
+  }
+
+  return result;
+}
+
+module.exports = { getWorkAgreement, getWorkAgreements, getWorkerIdsByAgreements };

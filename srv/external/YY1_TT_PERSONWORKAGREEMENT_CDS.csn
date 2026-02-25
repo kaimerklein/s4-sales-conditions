@@ -1,0 +1,63 @@
+{
+ "meta": {
+  "creator": "cds-dk 9.6.0"
+ },
+ "$version": "2.0",
+ "definitions": {
+  "YY1_TT_PERSONWORKAGREEMENT_CDS": {
+   "kind": "service",
+   "@cds.external": true,
+   "@m.IsDefaultEntityContainer": "true"
+  },
+  "YY1_TT_PERSONWORKAGREEMENT_CDS.YY1_TT_PersonWorkAgreement": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "elements": {
+    "PersonWorkAgreement": {
+     "key": true,
+     "type": "cds.String",
+     "length": 8,
+     "notNull": true
+    },
+    "PersonWorkAgreementExternalID": {
+     "type": "cds.String",
+     "length": 20
+    },
+    "PersonFullName": {
+     "type": "cds.String",
+     "length": 80
+    },
+    "CostCenter": {
+     "type": "cds.String",
+     "length": 10
+    },
+    "CompanyCode": {
+     "type": "cds.String",
+     "length": 4
+    }
+   }
+  },
+  "YY1_TT_PERSONWORKAGREEMENT_CDS.YY1_TT_PersonWorkAgreementParameters": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "elements": {
+    "P_KeyDate": {
+     "key": true,
+     "type": "cds.DateTime",
+     "@odata.Type": "Edm.DateTime",
+     "notNull": true
+    },
+    "Set": {
+     "type": "cds.Association",
+     "target": "YY1_TT_PERSONWORKAGREEMENT_CDS.YY1_TT_PersonWorkAgreement",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    }
+   }
+  }
+ }
+}

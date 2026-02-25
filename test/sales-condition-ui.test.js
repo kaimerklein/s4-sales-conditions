@@ -1,181 +1,87 @@
 const cds = require('@sap/cds');
 
-const MOCK_VALIDITY_RECORDS = [
-  {
-    ConditionRecord: 'CR001',
-    ConditionValidityEndDate: '2024-12-31',
-    ConditionValidityStartDate: '2024-01-01',
-    ConditionType: 'PCP0',
-    Personnel: 'WA-0001',
-    Customer: 'CUST01',
-    EngagementProject: 'PRJ001',
-  },
-  {
-    ConditionRecord: 'CR002',
-    ConditionValidityEndDate: '2024-12-31',
-    ConditionValidityStartDate: '2024-03-01',
-    ConditionType: 'PCP0',
-    Personnel: 'WA-0002',
-    Customer: 'CUST02',
-    EngagementProject: '',
-  },
-];
+const MOCK_VALIDITY_RECORDS = [];
+const MOCK_CONDITION_RECORDS = [];
+const WORKER_FIXTURE = [];
+const EMPLOYEE_FIXTURE = [];
 
-const MOCK_CONDITION_RECORDS = [
-  {
-    ConditionRecord: 'CR001',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionRateValue: 100.0,
-    ConditionRateValueUnit: 'EUR',
-    ConditionCurrency: 'EUR',
-  },
-  {
-    ConditionRecord: 'CR002',
-    ConditionSequentialNumber: '01',
-    ConditionTable: '304',
-    ConditionType: 'PCP0',
-    ConditionRateValue: 200.0,
-    ConditionRateValueUnit: 'USD',
-    ConditionCurrency: 'USD',
-  },
-];
-
-const WORKER_FIXTURE = [
-  {
-    PersonWorkAgreement: 'WA-0001',
-    PersonWorkAgreementExternalID: '10001',
-    CompanyCode: '1000',
-    CompanyCodeName: 'ACME Corp',
-    Company: 'AC',
-    StartDate: '2024-01-01',
-    EndDate: '2024-12-31',
-  },
-];
-
-function matchesWhere(record, where) {
-  let i = 0;
-  while (i < where.length) {
-    if (where[i] === 'and') { i++; continue; }
-    const left = where[i];
-    const op = where[i + 1];
-    const right = where[i + 2];
-    if (left?.ref && op === '=' && right?.val !== undefined) {
-      const field = left.ref[0];
-      if (record[field] !== right.val) return false;
-    }
-    if (left?.ref && op === 'in' && Array.isArray(right?.list)) {
-      const field = left.ref[0];
-      const vals = right.list.map(x => x.val);
-      if (!vals.includes(record[field])) return false;
-    }
-    i += 3;
-  }
-  return true;
-}
+function matchesWhere() { return true; }
 
 const mockConditionService = {
   entities: {
     A_SlsPrcgCndnRecdValidity: 'A_SlsPrcgCndnRecdValidity',
     A_SlsPrcgConditionRecord: 'A_SlsPrcgConditionRecord',
   },
-  run: jest.fn(async (query) => {
-    const from = query?.SELECT?.from?.ref?.[0] || query?.SELECT?.from;
-    const where = query?.SELECT?.where;
-    if (from === 'A_SlsPrcgConditionRecord') {
-      if (!where) return [...MOCK_CONDITION_RECORDS];
-      return MOCK_CONDITION_RECORDS.filter((r) => matchesWhere(r, where));
-    }
-    if (!where) return [...MOCK_VALIDITY_RECORDS];
-    return MOCK_VALIDITY_RECORDS.filter((r) => matchesWhere(r, where));
-  }),
+  run: jest.fn(async () => []),
 };
 
 const mockWorkerService = {
-  entities: {
-    YY1_RSM_WORKAGRMNT_VAL_IE: 'YY1_RSM_WORKAGRMNT_VAL_IE',
-  },
-  run: jest.fn(async (query) => {
-    const where = query?.SELECT?.where;
-    if (!where) return [...WORKER_FIXTURE];
-    return WORKER_FIXTURE.filter((r) => matchesWhere(r, where));
-  }),
+  entities: { YY1_RSM_WORKAGRMNT_VAL_IE: 'YY1_RSM_WORKAGRMNT_VAL_IE' },
+  run: jest.fn(async () => []),
+};
+
+const mockEmployeeService = {
+  entities: { YY1_TT_PersonWorkAgreement: 'YY1_TT_PersonWorkAgreement' },
+  run: jest.fn(async () => []),
 };
 
 const originalConnect = cds.connect.to.bind(cds.connect);
 jest.spyOn(cds.connect, 'to').mockImplementation(async (name) => {
   if (name === 'API_SLSPRICINGCONDITIONRECORD_SRV') return mockConditionService;
   if (name === 'YY1_RSM_WORKAGRMNT_VAL_IE_CDS') return mockWorkerService;
+  if (name === 'YY1_TT_PERSONWORKAGREEMENT_CDS') return mockEmployeeService;
   return originalConnect(name);
 });
 
-describe('ConditionRecords entity – annotations', () => {
-  let csn;
-
-  beforeAll(async () => {
-    csn = await cds.load('srv/sales-condition-service');
-  });
-
-  it('CDS model compiles successfully', () => {
+describe('Employees entity – annotations', () => {
+  it('CDS model compiles successfully', async () => {
+    const csn = await cds.load('srv/sales-condition-service');
     expect(csn).toBeDefined();
-    const entity = csn.definitions['SalesConditionService.ConditionRecords'];
+    const entity = csn.definitions['SalesConditionService.Employees'];
     expect(entity).toBeDefined();
     expect(entity.kind).toBe('entity');
   });
 
-  it('has @UI.LineItem annotations', async () => {
+  it('has EmployeeConditions entity', async () => {
+    const csn = await cds.load('srv/sales-condition-service');
+    const entity = csn.definitions['SalesConditionService.EmployeeConditions'];
+    expect(entity).toBeDefined();
+    expect(entity.kind).toBe('entity');
+  });
+
+  it('has @UI.LineItem annotations on Employees', async () => {
     const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
-    const entity = compiled.definitions['SalesConditionService.ConditionRecords'];
+    const entity = compiled.definitions['SalesConditionService.Employees'];
     expect(entity['@UI.LineItem']).toBeDefined();
     expect(entity['@UI.LineItem'].length).toBeGreaterThan(0);
   });
 
-  it('has @UI.SelectionFields annotations', async () => {
+  it('has @UI.SelectionFields on Employees with 4 fields', async () => {
     const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
-    const entity = compiled.definitions['SalesConditionService.ConditionRecords'];
+    const entity = compiled.definitions['SalesConditionService.Employees'];
     expect(entity['@UI.SelectionFields']).toBeDefined();
-    expect(entity['@UI.SelectionFields'].length).toBe(3);
+    expect(entity['@UI.SelectionFields'].length).toBe(4);
   });
 
-  it('has @UI.HeaderInfo annotations', async () => {
+  it('has @UI.HeaderInfo annotations on Employees', async () => {
     const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
-    const entity = compiled.definitions['SalesConditionService.ConditionRecords'];
-    expect(entity['@UI.HeaderInfo.TypeNamePlural']).toBe('Sales Price Conditions');
-    expect(entity['@UI.HeaderInfo.TypeName']).toBe('Sales Price Condition');
-  });
-});
-
-describe('ConditionRecords entity – READ handler', () => {
-  const test = cds.test(__dirname + '/..');
-
-  it('returns records filtered by WorkerId', async () => {
-    const { data } = await test.axios.get(
-      "/odata/v4/sales-condition/ConditionRecords?$filter=WorkerId eq '10001'"
-    );
-    expect(data.value.length).toBe(1);
-    expect(data.value[0].ConditionRecord).toBe('CR001');
-    expect(data.value[0].WorkerId).toBe('10001');
+    const entity = compiled.definitions['SalesConditionService.Employees'];
+    expect(entity['@UI.HeaderInfo.TypeNamePlural']).toBe('Employees');
+    expect(entity['@UI.HeaderInfo.TypeName']).toBe('Employee');
   });
 
-  it('returns records filtered by Customer', async () => {
-    const { data } = await test.axios.get(
-      "/odata/v4/sales-condition/ConditionRecords?$filter=Customer eq 'CUST02'"
-    );
-    expect(data.value.length).toBe(1);
-    expect(data.value[0].ConditionRecord).toBe('CR002');
+  it('has @UI.LineItem annotations on EmployeeConditions', async () => {
+    const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
+    const entity = compiled.definitions['SalesConditionService.EmployeeConditions'];
+    expect(entity['@UI.LineItem']).toBeDefined();
+    expect(entity['@UI.LineItem'].length).toBeGreaterThan(0);
   });
 
-  it('returns records filtered by both WorkerId and Customer', async () => {
-    const { data } = await test.axios.get(
-      "/odata/v4/sales-condition/ConditionRecords?$filter=WorkerId eq '10001' and Customer eq 'CUST01'"
-    );
-    expect(data.value.length).toBe(1);
-    expect(data.value[0].ConditionRecord).toBe('CR001');
-  });
-
-  it('returns empty array when no filter is provided', async () => {
-    const { data } = await test.axios.get('/odata/v4/sales-condition/ConditionRecords');
-    expect(data.value).toEqual([]);
+  it('has @UI.PresentationVariant on EmployeeConditions', async () => {
+    const compiled = await cds.load(['srv/sales-condition-service', 'app/pricing-app/annotations']);
+    const entity = compiled.definitions['SalesConditionService.EmployeeConditions'];
+    expect(entity['@UI.PresentationVariant.SortOrder']).toBeDefined();
+    expect(entity['@UI.PresentationVariant.GroupBy']).toBeDefined();
+    expect(entity['@UI.PresentationVariant.Visualizations']).toBeDefined();
   });
 });

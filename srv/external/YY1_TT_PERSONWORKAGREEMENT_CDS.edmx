@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="YY1_TT_PERSONWORKAGREEMENT_CDS" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityType Name="YY1_TT_PersonWorkAgreementType">
+        <Key>
+          <PropertyRef Name="PersonWorkAgreement"/>
+        </Key>
+        <Property Name="PersonWorkAgreement" Type="Edm.String" Nullable="false" MaxLength="8"/>
+        <Property Name="PersonWorkAgreementExternalID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="PersonFullName" Type="Edm.String" MaxLength="80"/>
+        <Property Name="CostCenter" Type="Edm.String" MaxLength="10"/>
+        <Property Name="CompanyCode" Type="Edm.String" MaxLength="4"/>
+      </EntityType>
+      <EntityType Name="YY1_TT_PersonWorkAgreementParametersType">
+        <Key>
+          <PropertyRef Name="P_KeyDate"/>
+        </Key>
+        <Property Name="P_KeyDate" Type="Edm.DateTime" Nullable="false" Precision="0"/>
+        <NavigationProperty Name="Set" Relationship="YY1_TT_PERSONWORKAGREEMENT_CDS.ParametersToEntity" FromRole="Parameters" ToRole="Results"/>
+      </EntityType>
+      <Association Name="ParametersToEntity">
+        <End Type="YY1_TT_PERSONWORKAGREEMENT_CDS.YY1_TT_PersonWorkAgreementParametersType" Multiplicity="1" Role="Parameters"/>
+        <End Type="YY1_TT_PERSONWORKAGREEMENT_CDS.YY1_TT_PersonWorkAgreementType" Multiplicity="*" Role="Results"/>
+      </Association>
+      <EntityContainer Name="YY1_TT_PERSONWORKAGREEMENT_CDS" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="YY1_TT_PersonWorkAgreement" EntityType="YY1_TT_PERSONWORKAGREEMENT_CDS.YY1_TT_PersonWorkAgreementType"/>
+        <EntitySet Name="YY1_TT_PersonWorkAgreementParameters" EntityType="YY1_TT_PERSONWORKAGREEMENT_CDS.YY1_TT_PersonWorkAgreementParametersType"/>
+        <AssociationSet Name="ParametersToEntitySet" Association="YY1_TT_PERSONWORKAGREEMENT_CDS.ParametersToEntity">
+          <End EntitySet="YY1_TT_PersonWorkAgreementParameters" Role="Parameters"/>
+          <End EntitySet="YY1_TT_PersonWorkAgreement" Role="Results"/>
+        </AssociationSet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -1,6 +1,6 @@
 const cds = require('@sap/cds');
 
-// Mock validity records with nested to_SlsPrcgConditionRecord
+// Mock validity records including Mandantengruppe field
 const MOCK_VALIDITY_RECORDS = [
   {
     ConditionRecord: 'CR001',
@@ -10,6 +10,7 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0001',
     Customer: 'CUST01',
     EngagementProject: 'PRJ001',
+    YY1_Mandantengruppe_PCI: '',
   },
   {
     ConditionRecord: 'CR002',
@@ -19,6 +20,7 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0002',
     Customer: 'CUST02',
     EngagementProject: '',
+    YY1_Mandantengruppe_PCI: '',
   },
   {
     ConditionRecord: 'CR003',
@@ -27,7 +29,8 @@ const MOCK_VALIDITY_RECORDS = [
     ConditionType: 'PSP0',
     Personnel: 'WA-0001',
     Customer: '',
-    EngagementProject: 'PRJ002',
+    EngagementProject: '',
+    YY1_Mandantengruppe_PCI: '',
   },
   {
     ConditionRecord: 'CR004',
@@ -37,6 +40,27 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0001',
     Customer: 'CUST01',
     EngagementProject: '',
+    YY1_Mandantengruppe_PCI: '',
+  },
+  {
+    ConditionRecord: 'CR005',
+    ConditionValidityEndDate: '2024-12-31',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PSP0',
+    Personnel: 'WA-0003',
+    Customer: 'CUST03',
+    EngagementProject: '',
+    YY1_Mandantengruppe_PCI: 'MG01',
+  },
+  {
+    ConditionRecord: 'CR006',
+    ConditionValidityEndDate: '2024-12-31',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PSP0',
+    Personnel: 'WA-0003',
+    Customer: '',
+    EngagementProject: '',
+    YY1_Mandantengruppe_PCI: 'MG02',
   },
 ];
 
@@ -77,6 +101,24 @@ const MOCK_CONDITION_RECORDS = [
     ConditionRateValueUnit: 'EUR',
     ConditionCurrency: 'EUR',
   },
+  {
+    ConditionRecord: 'CR005',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '305',
+    ConditionType: 'PSP0',
+    ConditionRateValue: 120.0,
+    ConditionRateValueUnit: 'EUR',
+    ConditionCurrency: 'EUR',
+  },
+  {
+    ConditionRecord: 'CR006',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '305',
+    ConditionType: 'PSP0',
+    ConditionRateValue: 110.0,
+    ConditionRateValueUnit: 'EUR',
+    ConditionCurrency: 'EUR',
+  },
 ];
 
 /**
@@ -108,7 +150,7 @@ function matchesWhere(record, where) {
 }
 
 describe('condition-record lib', () => {
-  let getConditionRecords;
+  let getConditionRecords, derivePriceLevel;
 
   beforeAll(() => {
     const mockService = {
@@ -136,7 +178,9 @@ describe('condition-record lib', () => {
       return originalConnect(name);
     });
 
-    getConditionRecords = require('../srv/lib/condition-record').getConditionRecords;
+    const mod = require('../srv/lib/condition-record');
+    getConditionRecords = mod.getConditionRecords;
+    derivePriceLevel = mod.derivePriceLevel;
   });
 
   afterAll(() => {
@@ -154,7 +198,7 @@ describe('condition-record lib', () => {
   });
 
   it('filters by customer and returns only matching records', async () => {
-    const results = await getConditionRecords({ customer: 'CUST02' });
+    const results = await getConditionRecords({ customers: 'CUST02' });
     expect(results.length).toBe(1);
     expect(results[0].ConditionRecord).toBe('CR002');
   });
@@ -162,25 +206,27 @@ describe('condition-record lib', () => {
   it('filters by both workAgreementId and customer', async () => {
     const results = await getConditionRecords({
       workAgreementIds: 'WA-0001',
-      customer: 'CUST01',
+      customers: 'CUST01',
     });
     expect(results.length).toBe(1);
     expect(results[0].ConditionRecord).toBe('CR001');
   });
 
-  it('flattens validity + condition record fields', async () => {
+  it('flattens validity + condition record fields with PriceLevel', async () => {
     const results = await getConditionRecords({ workAgreementIds: 'WA-0001' });
     const r = results[0];
-    expect(r.ConditionSequentialNumber).toBe('01');
     expect(r.ConditionTable).toBe('304');
     expect(r.ConditionRateValue).toBe(100.0);
     expect(r.ConditionRateValueUnit).toBe('EUR');
     expect(r.ConditionCurrency).toBe('EUR');
     expect(r.Customer).toBe('CUST01');
     expect(r.EngagementProject).toBe('PRJ001');
+    expect(r.Mandantengruppe).toBe('');
+    expect(r.PriceLevel).toBe('Project');
+    expect(r.PriceLevelOrder).toBe(1);
   });
 
-  it('throws when neither filter is provided', async () => {
+  it('throws when no filter is provided', async () => {
     await expect(getConditionRecords({})).rejects.toThrow(
       'At least one filter is required'
     );
@@ -204,5 +250,80 @@ describe('condition-record lib', () => {
   it('returns empty array when no records match', async () => {
     const results = await getConditionRecords({ workAgreementIds: 'WA-9999' });
     expect(results).toEqual([]);
+  });
+
+  // Mandantengruppe filter tests
+  it('filters by Mandantengruppe', async () => {
+    const results = await getConditionRecords({ mandantengruppen: 'MG01' });
+    expect(results.length).toBe(1);
+    expect(results[0].ConditionRecord).toBe('CR005');
+    expect(results[0].Mandantengruppe).toBe('MG01');
+  });
+
+  it('filters by multiple Mandantengruppen', async () => {
+    const results = await getConditionRecords({ mandantengruppen: ['MG01', 'MG02'] });
+    expect(results.length).toBe(2);
+    const ids = results.map(r => r.ConditionRecord);
+    expect(ids).toContain('CR005');
+    expect(ids).toContain('CR006');
+  });
+
+  // Multi-value filter tests
+  it('supports multiple customers', async () => {
+    const results = await getConditionRecords({ customers: ['CUST01', 'CUST02'] });
+    expect(results.length).toBe(2);
+    expect(results.map(r => r.ConditionRecord)).toEqual(expect.arrayContaining(['CR001', 'CR002']));
+  });
+
+  it('supports multiple engagement projects', async () => {
+    const results = await getConditionRecords({ engagementProjects: 'PRJ001' });
+    expect(results.length).toBe(1);
+    expect(results[0].ConditionRecord).toBe('CR001');
+  });
+
+  // Legacy single-value params
+  it('supports legacy single-value customer param', async () => {
+    const results = await getConditionRecords({ customer: 'CUST02' });
+    expect(results.length).toBe(1);
+    expect(results[0].ConditionRecord).toBe('CR002');
+  });
+
+  it('supports legacy single-value engagementProject param', async () => {
+    const results = await getConditionRecords({ engagementProject: 'PRJ001' });
+    expect(results.length).toBe(1);
+    expect(results[0].ConditionRecord).toBe('CR001');
+  });
+});
+
+describe('derivePriceLevel', () => {
+  let derivePriceLevel;
+
+  beforeAll(() => {
+    derivePriceLevel = require('../srv/lib/condition-record').derivePriceLevel;
+  });
+
+  it('returns Project for PCP0 with EngagementProject', () => {
+    const result = derivePriceLevel('PCP0', 'CUST01', 'PRJ001', '');
+    expect(result).toEqual({ PriceLevel: 'Project', PriceLevelOrder: 1 });
+  });
+
+  it('returns Customer for PSP0 with Customer', () => {
+    const result = derivePriceLevel('PSP0', 'CUST01', '', '');
+    expect(result).toEqual({ PriceLevel: 'Customer', PriceLevelOrder: 2 });
+  });
+
+  it('returns Mandantengruppe for PSP0 with Mandantengruppe', () => {
+    const result = derivePriceLevel('PSP0', '', '', 'MG01');
+    expect(result).toEqual({ PriceLevel: 'Mandantengruppe', PriceLevelOrder: 3 });
+  });
+
+  it('returns Basic for PSP0 with no specifics', () => {
+    const result = derivePriceLevel('PSP0', '', '', '');
+    expect(result).toEqual({ PriceLevel: 'Basic', PriceLevelOrder: 4 });
+  });
+
+  it('Customer takes priority over Mandantengruppe for PSP0', () => {
+    const result = derivePriceLevel('PSP0', 'CUST01', '', 'MG01');
+    expect(result).toEqual({ PriceLevel: 'Customer', PriceLevelOrder: 2 });
   });
 });

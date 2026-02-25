@@ -9,6 +9,7 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0001',
     Customer: 'CUST01',
     EngagementProject: 'PRJ001',
+    YY1_Mandantengruppe_PCI: '',
   },
   {
     ConditionRecord: 'CR002',
@@ -18,15 +19,17 @@ const MOCK_VALIDITY_RECORDS = [
     Personnel: 'WA-0002',
     Customer: 'CUST02',
     EngagementProject: '',
+    YY1_Mandantengruppe_PCI: '',
   },
   {
     ConditionRecord: 'CR003',
     ConditionValidityEndDate: '2024-12-31',
     ConditionValidityStartDate: '2024-01-01',
-    ConditionType: 'PR00',
+    ConditionType: 'PSP0',
     Personnel: 'WA-0001',
-    Customer: 'CUST01',
+    Customer: '',
     EngagementProject: '',
+    YY1_Mandantengruppe_PCI: 'MG01',
   },
 ];
 
@@ -53,8 +56,8 @@ const MOCK_CONDITION_RECORDS = [
     ConditionRecord: 'CR003',
     ConditionSequentialNumber: '01',
     ConditionTable: '305',
-    ConditionType: 'PR00',
-    ConditionRateValue: 50.0,
+    ConditionType: 'PSP0',
+    ConditionRateValue: 150.0,
     ConditionRateValueUnit: 'EUR',
     ConditionCurrency: 'EUR',
   },
@@ -79,6 +82,22 @@ const WORKER_FIXTURE = [
     Company: 'GG',
     StartDate: '2023-06-01',
     EndDate: '2024-05-31',
+  },
+];
+
+// Employee details fixture
+const EMPLOYEE_FIXTURE = [
+  {
+    PersonWorkAgreement: 'WA-0001',
+    PersonFullName: 'Max Mustermann',
+    CostCenter: 'CC100',
+    CompanyCode: '1000',
+  },
+  {
+    PersonWorkAgreement: 'WA-0002',
+    PersonFullName: 'Erika Musterfrau',
+    CostCenter: 'CC200',
+    CompanyCode: '2000',
   },
 ];
 
@@ -132,67 +151,91 @@ const mockWorkerService = {
   }),
 };
 
+const mockEmployeeService = {
+  entities: {
+    YY1_TT_PersonWorkAgreement: 'YY1_TT_PersonWorkAgreement',
+  },
+  run: jest.fn(async (query) => {
+    const where = query?.SELECT?.where;
+    if (!where) return [...EMPLOYEE_FIXTURE];
+    return EMPLOYEE_FIXTURE.filter((r) => matchesWhere(r, where));
+  }),
+};
+
 const originalConnect = cds.connect.to.bind(cds.connect);
 jest.spyOn(cds.connect, 'to').mockImplementation(async (name) => {
   if (name === 'API_SLSPRICINGCONDITIONRECORD_SRV') return mockConditionService;
   if (name === 'YY1_RSM_WORKAGRMNT_VAL_IE_CDS') return mockWorkerService;
+  if (name === 'YY1_TT_PERSONWORKAGREEMENT_CDS') return mockEmployeeService;
   return originalConnect(name);
 });
 
-describe('SalesConditionService', () => {
+describe('SalesConditionService — Employees', () => {
   const test = cds.test(__dirname + '/..');
 
-  it('returns records filtered by worker ID only', async () => {
+  it('returns employees filtered by WorkerId', async () => {
     const { data } = await test.axios.get(
-      '/odata/v4/sales-condition/getConditionRecords(workerId=\'10001\',customer=null)'
+      "/odata/v4/sales-condition/Employees?$filter=WorkerId eq '10001'"
     );
     expect(data.value.length).toBe(1);
-    expect(data.value[0].ConditionRecord).toBe('CR001');
-    expect(data.value[0].ConditionType).toBe('PCP0');
-    expect(data.value[0].Personnel).toBe('WA-0001');
+    expect(data.value[0].WorkerId).toBe('10001');
+    expect(data.value[0].EmployeeName).toBe('Max Mustermann');
+    expect(data.value[0].CostCenter).toBe('CC100');
+    expect(data.value[0].ConditionCount).toBe(2);
   });
 
-  it('returns records filtered by customer only', async () => {
+  it('returns employees filtered by Customer', async () => {
     const { data } = await test.axios.get(
-      '/odata/v4/sales-condition/getConditionRecords(workerId=null,customer=\'CUST02\')'
+      "/odata/v4/sales-condition/Employees?$filter=Customer eq 'CUST02'"
     );
-    expect(data.value.length).toBe(1);
-    expect(data.value[0].ConditionRecord).toBe('CR002');
+    expect(data.value.length).toBeGreaterThan(0);
   });
 
-  it('returns records filtered by both worker ID and customer', async () => {
+  it('returns empty array when no filter is provided', async () => {
+    const { data } = await test.axios.get('/odata/v4/sales-condition/Employees');
+    expect(data.value).toEqual([]);
+  });
+
+  it('returns empty array for unknown worker', async () => {
     const { data } = await test.axios.get(
-      '/odata/v4/sales-condition/getConditionRecords(workerId=\'10001\',customer=\'CUST01\')'
+      "/odata/v4/sales-condition/Employees?$filter=WorkerId eq '99999'"
     );
-    expect(data.value.length).toBe(1);
-    expect(data.value[0].ConditionRecord).toBe('CR001');
+    expect(data.value).toEqual([]);
+  });
+});
+
+describe('SalesConditionService — EmployeeConditions', () => {
+  const test = cds.test(__dirname + '/..');
+
+  it('returns conditions for a specific employee', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '10001'"
+    );
+    expect(data.value.length).toBe(2);
+    // Should be sorted by PriceLevelOrder
+    expect(data.value[0].PriceLevelOrder).toBeLessThanOrEqual(data.value[1].PriceLevelOrder);
   });
 
-  it('returns 400 when neither filter is provided', async () => {
-    try {
-      await test.axios.get(
-        '/odata/v4/sales-condition/getConditionRecords(workerId=null,customer=null)'
-      );
-      fail('Expected request to fail');
-    } catch (e) {
-      expect(e.response.status).toBe(400);
+  it('returns conditions with PriceLevel set', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '10001'"
+    );
+    for (const cond of data.value) {
+      expect(cond.PriceLevel).toBeDefined();
+      expect(['Project', 'Customer', 'Mandantengruppe', 'Basic']).toContain(cond.PriceLevel);
     }
   });
 
-  it('returns 404 for unknown worker ID', async () => {
-    try {
-      await test.axios.get(
-        '/odata/v4/sales-condition/getConditionRecords(workerId=\'99999\',customer=null)'
-      );
-      fail('Expected request to fail');
-    } catch (e) {
-      expect(e.response.status).toBe(404);
-    }
+  it('returns empty array for unknown worker', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '99999'"
+    );
+    expect(data.value).toEqual([]);
   });
 
-  it('returns empty array when no records match', async () => {
+  it('returns empty when no WorkerId filter', async () => {
     const { data } = await test.axios.get(
-      '/odata/v4/sales-condition/getConditionRecords(workerId=\'10003\',customer=null)'
+      '/odata/v4/sales-condition/EmployeeConditions'
     );
     expect(data.value).toEqual([]);
   });

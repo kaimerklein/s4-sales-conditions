@@ -1,30 +1,27 @@
 using { API_SLSPRICINGCONDITIONRECORD_SRV as external } from './external/API_SLSPRICINGCONDITIONRECORD_SRV';
 
 service SalesConditionService {
-  type ConditionRecord {
-    ConditionRecord            : String;
-    ConditionSequentialNumber  : String;
-    ConditionTable             : String;
-    ConditionType              : String;
-    ConditionValidityStartDate : Date;
-    ConditionValidityEndDate   : Date;
-    ConditionRateValue         : Decimal;
-    ConditionRateValueUnit     : String;
-    ConditionCurrency          : String;
-    Personnel                  : String;
-    Customer                   : String;
-    EngagementProject          : String;
+  @readonly entity Employees {
+    key WorkerId               : String;
+        PersonnelNumber        : String;
+        EmployeeName           : String;
+        CostCenter             : String;
+        CompanyCode            : String;
+        CompanyCodeName        : String;
+        ConditionCount         : Integer;
+        Customer               : String;
+        EngagementProject      : String;
+        Mandantengruppe        : String;
+        Conditions             : Composition of many EmployeeConditions
+                                   on Conditions.WorkerId = $self.WorkerId;
   }
 
-  function getConditionRecords(workerId : String, customer : String)
-    returns array of ConditionRecord;
-
-  @readonly entity ConditionRecords {
+  @readonly entity EmployeeConditions {
+    key WorkerId                   : String;
     key ConditionRecord            : String;
     key ConditionValidityEndDate   : Date;
-        ConditionSequentialNumber  : String;
-        ConditionTable             : String;
         ConditionType              : String;
+        ConditionTable             : String;
         ConditionValidityStartDate : Date;
         ConditionRateValue         : Decimal;
         ConditionRateValueUnit     : String;
@@ -32,6 +29,8 @@ service SalesConditionService {
         Personnel                  : String;
         Customer                   : String;
         EngagementProject          : String;
-        WorkerId                   : String;
+        Mandantengruppe            : String;
+        PriceLevel                 : String;
+        PriceLevelOrder            : Integer;
   }
 }

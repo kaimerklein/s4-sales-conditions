@@ -35,6 +35,10 @@
       "YY1_RSM_WORKAGRMNT_VAL_IE_CDS": {
         "kind": "odata-v2",
         "model": "srv/external/YY1_RSM_WORKAGRMNT_VAL_IE_CDS"
+      },
+      "YY1_TT_PERSONWORKAGREEMENT_CDS": {
+        "kind": "odata-v2",
+        "model": "srv/external/YY1_TT_PERSONWORKAGREEMENT_CDS"
       }
     }
   },

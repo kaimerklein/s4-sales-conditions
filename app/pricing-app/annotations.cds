@@ -1,60 +1,74 @@
 using SalesConditionService as service from '../../srv/sales-condition-service';
 
-annotate service.ConditionRecords with @(
+annotate service.Employees with @(
     UI.HeaderInfo : {
-        TypeName       : 'Sales Price Condition',
-        TypeNamePlural : 'Sales Price Conditions',
-        Title          : { Value : ConditionRecord }
+        TypeName       : 'Employee',
+        TypeNamePlural : 'Employees',
+        Title          : { Value : WorkerId },
+        Description    : { Value : EmployeeName }
     },
     UI.SelectionFields : [
         WorkerId,
         Customer,
-        EngagementProject
+        EngagementProject,
+        Mandantengruppe
     ],
     UI.LineItem : [
-        { $Type : 'UI.DataField', Value : ConditionRecord,             Label : 'Condition Record' },
-        { $Type : 'UI.DataField', Value : Personnel,                   Label : 'Personnel' },
-        { $Type : 'UI.DataField', Value : Customer,                    Label : 'Customer' },
-        { $Type : 'UI.DataField', Value : EngagementProject,           Label : 'Engagement Project' },
-        { $Type : 'UI.DataField', Value : ConditionRateValue,          Label : 'Rate Value' },
-        { $Type : 'UI.DataField', Value : ConditionRateValueUnit,      Label : 'Rate Unit' },
-        { $Type : 'UI.DataField', Value : ConditionCurrency,           Label : 'Currency' },
-        { $Type : 'UI.DataField', Value : ConditionValidityStartDate,  Label : 'Valid From' },
-        { $Type : 'UI.DataField', Value : ConditionValidityEndDate,    Label : 'Valid To' }
+        { $Type : 'UI.DataField', Value : WorkerId,        Label : 'Worker ID' },
+        { $Type : 'UI.DataField', Value : EmployeeName,    Label : 'Employee Name' },
+        { $Type : 'UI.DataField', Value : CostCenter,      Label : 'Cost Center' },
+        { $Type : 'UI.DataField', Value : CompanyCodeName,  Label : 'Company' },
+        { $Type : 'UI.DataField', Value : ConditionCount,  Label : 'Conditions' }
     ],
-    UI.FieldGroup #GeneratedGroup : {
-        $Type : 'UI.FieldGroupType',
-        Data : [
-            { $Type : 'UI.DataField', Value : ConditionRecord },
-            { $Type : 'UI.DataField', Value : ConditionSequentialNumber },
-            { $Type : 'UI.DataField', Value : ConditionTable },
-            { $Type : 'UI.DataField', Value : ConditionType },
-            { $Type : 'UI.DataField', Value : ConditionValidityStartDate },
-            { $Type : 'UI.DataField', Value : ConditionValidityEndDate },
-            { $Type : 'UI.DataField', Value : ConditionRateValue },
-            { $Type : 'UI.DataField', Value : ConditionRateValueUnit },
-            { $Type : 'UI.DataField', Value : ConditionCurrency },
-            { $Type : 'UI.DataField', Value : Personnel },
-            { $Type : 'UI.DataField', Value : Customer },
-            { $Type : 'UI.DataField', Value : EngagementProject },
-            { $Type : 'UI.DataField', Value : WorkerId },
-        ],
-    },
     UI.Facets : [
         {
             $Type  : 'UI.ReferenceFacet',
-            ID     : 'GeneratedFacet1',
-            Label  : 'General Information',
-            Target : '@UI.FieldGroup#GeneratedGroup',
+            ID     : 'ConditionsFacet',
+            Label  : 'Pricing Conditions',
+            Target : 'Conditions/@UI.PresentationVariant',
         },
     ],
 );
 
-annotate service.ConditionRecords with {
+annotate service.Employees with {
+    WorkerId          @title : 'Worker ID';
+    PersonnelNumber   @title : 'Personnel Number';
+    EmployeeName      @title : 'Employee Name';
+    CostCenter        @title : 'Cost Center';
+    CompanyCode       @title : 'Company Code';
+    CompanyCodeName   @title : 'Company';
+    ConditionCount    @title : 'Conditions';
+    Customer          @title : 'Customer';
+    EngagementProject @title : 'Engagement Project';
+    Mandantengruppe   @title : 'Mandantengruppe';
+};
+
+annotate service.EmployeeConditions with @(
+    UI.PresentationVariant : {
+        SortOrder : [
+            { Property : PriceLevelOrder, Descending : false }
+        ],
+        GroupBy : [ PriceLevel ],
+        Visualizations : ['@UI.LineItem'],
+    },
+    UI.LineItem : [
+        { $Type : 'UI.DataField', Value : PriceLevel,                  Label : 'Price Level' },
+        { $Type : 'UI.DataField', Value : ConditionRateValue,          Label : 'Rate Value' },
+        { $Type : 'UI.DataField', Value : ConditionCurrency,           Label : 'Currency' },
+        { $Type : 'UI.DataField', Value : Customer,                    Label : 'Customer' },
+        { $Type : 'UI.DataField', Value : EngagementProject,           Label : 'Engagement Project' },
+        { $Type : 'UI.DataField', Value : Mandantengruppe,             Label : 'Mandantengruppe' },
+        { $Type : 'UI.DataField', Value : ConditionValidityStartDate,  Label : 'Valid From' },
+        { $Type : 'UI.DataField', Value : ConditionValidityEndDate,    Label : 'Valid To' },
+        { $Type : 'UI.DataField', Value : ConditionType,               Label : 'Condition Type' }
+    ],
+);
+
+annotate service.EmployeeConditions with {
+    WorkerId                   @title : 'Worker ID';
     ConditionRecord            @title : 'Condition Record';
-    ConditionSequentialNumber  @title : 'Sequence Number';
-    ConditionTable             @title : 'Condition Table';
     ConditionType              @title : 'Condition Type';
+    ConditionTable             @title : 'Condition Table';
     ConditionValidityStartDate @title : 'Valid From';
     ConditionValidityEndDate   @title : 'Valid To';
     ConditionRateValue         @title : 'Rate Value';
@@ -63,5 +77,7 @@ annotate service.ConditionRecords with {
     Personnel                  @title : 'Personnel';
     Customer                   @title : 'Customer';
     EngagementProject          @title : 'Engagement Project';
-    WorkerId                   @title : 'Worker ID';
+    Mandantengruppe            @title : 'Mandantengruppe';
+    PriceLevel                 @title : 'Price Level';
+    PriceLevelOrder            @title : 'Price Level Order';
 };

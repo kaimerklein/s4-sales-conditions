@@ -85,28 +85,28 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "ConditionRecordsList",
-          "target": "ConditionRecordsList"
+          "name": "EmployeesList",
+          "target": "EmployeesList"
         },
         {
-          "pattern": "ConditionRecords({key}):?query:",
-          "name": "ConditionRecordsObjectPage",
-          "target": "ConditionRecordsObjectPage"
+          "pattern": "Employees({key}):?query:",
+          "name": "EmployeesObjectPage",
+          "target": "EmployeesObjectPage"
         }
       ],
       "targets": {
-        "ConditionRecordsList": {
+        "EmployeesList": {
           "type": "Component",
-          "id": "ConditionRecordsList",
+          "id": "EmployeesList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/ConditionRecords",
+              "contextPath": "/Employees",
               "variantManagement": "Page",
               "navigation": {
-                "ConditionRecords": {
+                "Employees": {
                   "detail": {
-                    "route": "ConditionRecordsObjectPage"
+                    "route": "EmployeesObjectPage"
                   }
                 }
               },
@@ -120,14 +120,14 @@
             }
           }
         },
-        "ConditionRecordsObjectPage": {
+        "EmployeesObjectPage": {
           "type": "Component",
-          "id": "ConditionRecordsObjectPage",
+          "id": "EmployeesObjectPage",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/ConditionRecords"
+              "contextPath": "/Employees"
             }
           }
         }
