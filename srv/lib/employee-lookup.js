@@ -6,8 +6,8 @@ const SERVICE_NAME = 'YY1_TT_PERSONWORKAGREEMENT_CDS';
  * Look up employee details (name, cost center) for a set of PersonWorkAgreement IDs
  * from the YY1_TT_PERSONWORKAGREEMENT_CDS parameterized entity.
  *
- * The OData V2 service uses a parameterized pattern:
- *   YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'...')/Set
+ * Uses SELECT.from for mocked/dev services, falls back to srv.send with the
+ * parameterized path for the real OData V2 service.
  *
  * @param {string[]} workAgreementIds - PersonWorkAgreement IDs to look up
  * @returns {Promise<Map<string, {name: string, costCenter: string, companyCode: string}>>}
@@ -18,19 +18,27 @@ async function getEmployeeDetails(workAgreementIds) {
 
   try {
     const srv = await cds.connect.to(SERVICE_NAME);
+    let rows;
 
-    // Build the parameterized path with today's date
-    const today = new Date().toISOString().split('T')[0] + 'T00:00:00';
-    const filterParts = workAgreementIds.map(
-      id => `PersonWorkAgreement eq '${id}'`
-    );
-    const filter = filterParts.join(' or ');
-    const path = `/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'${today}')/Set?$filter=${filter}`;
+    try {
+      // CQN query — works with mocked services and direct entity sets
+      const { YY1_TT_PersonWorkAgreement } = srv.entities;
+      rows = await srv.run(
+        SELECT.from(YY1_TT_PersonWorkAgreement)
+          .where({ PersonWorkAgreement: { in: workAgreementIds } })
+      );
+    } catch {
+      // Fallback: parameterized entity path for real OData V2 service
+      const today = new Date().toISOString().split('T')[0] + 'T00:00:00';
+      const filter = workAgreementIds
+        .map(id => `PersonWorkAgreement eq '${id}'`)
+        .join(' or ');
+      const path = `/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'${today}')/Set?$filter=${filter}`;
+      const resp = await srv.send('GET', path);
+      rows = Array.isArray(resp) ? resp : (resp?.value || []);
+    }
 
-    const rows = await srv.send('GET', path);
-
-    const list = Array.isArray(rows) ? rows : (rows?.value || []);
-    for (const row of list) {
+    for (const row of rows) {
       const id = row.PersonWorkAgreement;
       if (id && !result.has(id)) {
         result.set(id, {
