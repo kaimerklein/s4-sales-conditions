@@ -21,14 +21,7 @@ async function getEmployeeDetails(workAgreementIds) {
     let rows;
 
     try {
-      // CQN query — works with mocked services and direct entity sets
-      const { YY1_TT_PersonWorkAgreement } = srv.entities;
-      rows = await srv.run(
-        SELECT.from(YY1_TT_PersonWorkAgreement)
-          .where({ PersonWorkAgreement: { in: workAgreementIds } })
-      );
-    } catch {
-      // Fallback: parameterized entity path for real OData V2 service
+      // Parameterized entity path for real OData V2 service
       const today = new Date().toISOString().split('T')[0] + 'T00:00:00';
       const filter = workAgreementIds
         .map(id => `PersonWorkAgreement eq '${id}'`)
@@ -36,6 +29,13 @@ async function getEmployeeDetails(workAgreementIds) {
       const path = `/YY1_TT_PersonWorkAgreement(P_KeyDate=datetime'${today}')/Set?$filter=${filter}`;
       const resp = await srv.send('GET', path);
       rows = Array.isArray(resp) ? resp : (resp?.value || []);
+    } catch {
+      // Fallback: CQN query — works with mocked/test services
+      const { YY1_TT_PersonWorkAgreement } = srv.entities;
+      rows = await srv.run(
+        SELECT.from(YY1_TT_PersonWorkAgreement)
+          .where({ PersonWorkAgreement: { in: workAgreementIds } })
+      );
     }
 
     for (const row of rows) {
