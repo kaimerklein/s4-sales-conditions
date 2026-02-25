@@ -39,6 +39,14 @@
       "YY1_TT_PERSONWORKAGREEMENT_CDS": {
         "kind": "odata-v2",
         "model": "srv/external/YY1_TT_PERSONWORKAGREEMENT_CDS"
+      },
+      "API_BUSINESS_PARTNER": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_BUSINESS_PARTNER"
+      },
+      "SC_EXTERNAL_SERVICES_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/SC_EXTERNAL_SERVICES_SRV"
       }
     }
   },

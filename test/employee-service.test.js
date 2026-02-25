@@ -31,6 +31,26 @@ const MOCK_VALIDITY_RECORDS = [
     EngagementProject: '',
     YY1_Mandantengruppe_PCI: 'MG01',
   },
+  {
+    ConditionRecord: 'CR004',
+    ConditionValidityEndDate: '2024-12-31',
+    ConditionValidityStartDate: '2024-06-01',
+    ConditionType: 'PCP0',
+    Personnel: 'WA-0001',
+    Customer: '',
+    EngagementProject: 'PRJ002',
+    YY1_Mandantengruppe_PCI: '',
+  },
+  {
+    ConditionRecord: 'CR005',
+    ConditionValidityEndDate: '2024-12-31',
+    ConditionValidityStartDate: '2024-01-01',
+    ConditionType: 'PSP0',
+    Personnel: 'WA-0001',
+    Customer: 'CUST03',
+    EngagementProject: '',
+    YY1_Mandantengruppe_PCI: '',
+  },
 ];
 
 const MOCK_CONDITION_RECORDS = [
@@ -60,6 +80,26 @@ const MOCK_CONDITION_RECORDS = [
     ConditionTable: '305',
     ConditionType: 'PSP0',
     ConditionRateValue: 150.0,
+    ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
+    ConditionCurrency: 'EUR',
+  },
+  {
+    ConditionRecord: 'CR004',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '304',
+    ConditionType: 'PCP0',
+    ConditionRateValue: 120.0,
+    ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
+    ConditionCurrency: 'EUR',
+  },
+  {
+    ConditionRecord: 'CR005',
+    ConditionSequentialNumber: '01',
+    ConditionTable: '305',
+    ConditionType: 'PSP0',
+    ConditionRateValue: 180.0,
     ConditionRateValueUnit: 'EUR',
     ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
@@ -102,6 +142,20 @@ const EMPLOYEE_FIXTURE = [
     CostCenter: 'CC200',
     CompanyCode: '2000',
   },
+];
+
+// Project fixture: maps ProjectID → Customer
+const PROJECT_FIXTURE = [
+  { ProjectID: 'PRJ001', Customer: 'CUST01' },
+  { ProjectID: 'PRJ002', Customer: 'CUST04' },
+];
+
+// Business partner fixture: maps BusinessPartner → name + Mandantengruppe
+const BUSINESS_PARTNER_FIXTURE = [
+  { BusinessPartner: 'CUST01', BusinessPartnerFullName: 'Customer One GmbH', YY1_Mandantengruppe2_bus: 'MG-A' },
+  { BusinessPartner: 'CUST02', BusinessPartnerFullName: 'Customer Two AG', YY1_Mandantengruppe2_bus: 'MG-B' },
+  { BusinessPartner: 'CUST03', BusinessPartnerFullName: 'Customer Three SE', YY1_Mandantengruppe2_bus: 'MG-C' },
+  { BusinessPartner: 'CUST04', BusinessPartnerFullName: 'Customer Four Inc', YY1_Mandantengruppe2_bus: 'MG-D' },
 ];
 
 function matchesWhere(record, where) {
@@ -172,11 +226,35 @@ const mockEmployeeService = {
   }),
 };
 
+const mockProjectService = {
+  entities: {
+    ProjectSet: 'ProjectSet',
+  },
+  run: jest.fn(async (query) => {
+    const where = query?.SELECT?.where;
+    if (!where) return [...PROJECT_FIXTURE];
+    return PROJECT_FIXTURE.filter((r) => matchesWhere(r, where));
+  }),
+};
+
+const mockBusinessPartnerService = {
+  entities: {
+    A_BusinessPartner: 'A_BusinessPartner',
+  },
+  run: jest.fn(async (query) => {
+    const where = query?.SELECT?.where;
+    if (!where) return [...BUSINESS_PARTNER_FIXTURE];
+    return BUSINESS_PARTNER_FIXTURE.filter((r) => matchesWhere(r, where));
+  }),
+};
+
 const originalConnect = cds.connect.to.bind(cds.connect);
 jest.spyOn(cds.connect, 'to').mockImplementation(async (name) => {
   if (name === 'API_SLSPRICINGCONDITIONRECORD_SRV') return mockConditionService;
   if (name === 'YY1_RSM_WORKAGRMNT_VAL_IE_CDS') return mockWorkerService;
   if (name === 'YY1_TT_PERSONWORKAGREEMENT_CDS') return mockEmployeeService;
+  if (name === 'SC_EXTERNAL_SERVICES_SRV') return mockProjectService;
+  if (name === 'API_BUSINESS_PARTNER') return mockBusinessPartnerService;
   return originalConnect(name);
 });
 
@@ -191,7 +269,7 @@ describe('SalesConditionService — Employees', () => {
     expect(data.value[0].WorkerId).toBe('10001');
     expect(data.value[0].EmployeeName).toBe('Max Mustermann');
     expect(data.value[0].CostCenter).toBe('CC100');
-    expect(data.value[0].ConditionCount).toBe(2);
+    expect(data.value[0].ConditionCount).toBe(4);
   });
 
   it('returns employees filtered by Customer', async () => {
@@ -225,7 +303,7 @@ describe('SalesConditionService — Employees', () => {
     const { data } = await test.axios.get(
       "/odata/v4/sales-condition/Employees(WorkerId='10001')/Conditions"
     );
-    expect(data.value.length).toBe(2);
+    expect(data.value.length).toBe(4);
     expect(data.value[0].WorkerId).toBe('10001');
   });
 });
@@ -237,9 +315,11 @@ describe('SalesConditionService — EmployeeConditions', () => {
     const { data } = await test.axios.get(
       "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '10001'"
     );
-    expect(data.value.length).toBe(2);
+    expect(data.value.length).toBe(4);
     // Should be sorted by PriceLevelOrder
-    expect(data.value[0].PriceLevelOrder).toBeLessThanOrEqual(data.value[1].PriceLevelOrder);
+    for (let i = 1; i < data.value.length; i++) {
+      expect(data.value[i - 1].PriceLevelOrder).toBeLessThanOrEqual(data.value[i].PriceLevelOrder);
+    }
   });
 
   it('returns conditions with PriceLevel set', async () => {
@@ -264,5 +344,52 @@ describe('SalesConditionService — EmployeeConditions', () => {
       '/odata/v4/sales-condition/EmployeeConditions'
     );
     expect(data.value).toEqual([]);
+  });
+
+  it('enriches project-level conditions with CustomerName via business partner lookup', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '10001'"
+    );
+    // CR001: Project level, Customer=CUST01 (already set) → BP lookup → CustomerName
+    const cr001 = data.value.find(c => c.ConditionRecord === 'CR001');
+    expect(cr001.PriceLevel).toBe('Project');
+    expect(cr001.Customer).toBe('CUST01');
+    expect(cr001.CustomerName).toBe('Customer One GmbH');
+    expect(cr001.Mandantengruppe).toBe('MG-A');
+  });
+
+  it('enriches project-level conditions with Customer from project lookup when empty', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '10001'"
+    );
+    // CR004: Project level, Customer was empty → project lookup PRJ002→CUST04 → BP lookup
+    const cr004 = data.value.find(c => c.ConditionRecord === 'CR004');
+    expect(cr004.PriceLevel).toBe('Project');
+    expect(cr004.Customer).toBe('CUST04');
+    expect(cr004.CustomerName).toBe('Customer Four Inc');
+    expect(cr004.Mandantengruppe).toBe('MG-D');
+  });
+
+  it('enriches customer-level conditions with CustomerName and Mandantengruppe', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '10001'"
+    );
+    // CR005: Customer level, Customer=CUST03 → BP lookup → CustomerName + Mandantengruppe
+    const cr005 = data.value.find(c => c.ConditionRecord === 'CR005');
+    expect(cr005.PriceLevel).toBe('Customer');
+    expect(cr005.Customer).toBe('CUST03');
+    expect(cr005.CustomerName).toBe('Customer Three SE');
+    expect(cr005.Mandantengruppe).toBe('MG-C');
+  });
+
+  it('does not enrich Mandantengruppe-level conditions', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/EmployeeConditions?$filter=WorkerId eq '10001'"
+    );
+    // CR003: Mandantengruppe level, no Customer → no BP lookup
+    const cr003 = data.value.find(c => c.ConditionRecord === 'CR003');
+    expect(cr003.PriceLevel).toBe('Mandantengruppe');
+    expect(cr003.Mandantengruppe).toBe('MG01');
+    expect(cr003.CustomerName).toBe('');
   });
 });

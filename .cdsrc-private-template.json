@@ -1,0 +1,44 @@
+{
+  "requires": {
+    "API_SLSPRICINGCONDITIONRECORD_SRV": {
+      "credentials": {
+        "url": "https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_SLSPRICINGCONDITIONRECORD_SRV",
+        "authentication": "BasicAuthentication",
+        "username": "USER",
+        "password": "PASSWORD"
+      }
+    },
+    "YY1_RSM_WORKAGRMNT_VAL_IE_CDS": {
+      "credentials": {
+        "url": "https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_RSM_WORKAGRMNT_VAL_IE_CDS",
+        "authentication": "BasicAuthentication",
+        "username": "USER",
+        "password": "PASSWORD"
+      }
+    },
+    "YY1_TT_PERSONWORKAGREEMENT_CDS": {
+      "credentials": {
+        "url": "https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/YY1_TT_PERSONWORKAGREEMENT_CDS",
+        "authentication": "BasicAuthentication",
+        "username": "USER",
+        "password": "PASSWORD"
+      }
+    },
+    "API_BUSINESS_PARTNER": {
+      "credentials": {
+        "url": "https://my417785-api.s4hana.cloud.sap/sap/opu/odata/sap/API_BUSINESS_PARTNER",
+        "authentication": "BasicAuthentication",
+        "username": "USER",
+        "password": "PASSWORD"
+      }
+    },
+    "SC_EXTERNAL_SERVICES_SRV": {
+      "credentials": {
+        "url": "https://my417785-api.s4hana.cloud.sap/sap/opu/odata/cpd/SC_EXTERNAL_SERVICES_SRV",
+        "authentication": "BasicAuthentication",
+        "username": "USER",
+        "password": "PASSWORD"
+      }
+    }
+  }
+}

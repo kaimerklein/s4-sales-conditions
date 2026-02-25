@@ -1,0 +1,1154 @@
+{
+ "meta": {
+  "creator": "cds-dk 9.6.0"
+ },
+ "$version": "2.0",
+ "definitions": {
+  "SC_EXTERNAL_SERVICES_SRV": {
+   "kind": "service",
+   "@cds.external": true,
+   "@m.IsDefaultEntityContainer": "true",
+   "@sap.supported.formats": "atom json xlsx"
+  },
+  "SC_EXTERNAL_SERVICES_SRV.ProjectSet": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.updatable": "false",
+   "@sap.deletable": "false",
+   "@sap.pageable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Project",
+   "elements": {
+    "ProjectID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "ChangedBy": {
+     "type": "cds.String",
+     "length": 12,
+     "@sap.unicode": "false",
+     "@sap.label": "Changed By",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "UseProjectBilling": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Use Project Billiing",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "RestrictTimePosting": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Restrict time post",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ProfitCenter": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.unicode": "false",
+     "@sap.label": "Profit Center ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ChangedOn": {
+     "type": "cds.Timestamp",
+     "@odata.Type": "Edm.DateTimeOffset",
+     "@odata.Precision": 7,
+     "@sap.unicode": "false",
+     "@sap.label": "Changed On",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProfitCenterName": {
+     "type": "cds.String",
+     "length": 20,
+     "@sap.unicode": "false",
+     "@sap.label": "Profit Center Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ProjectName": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjectStage": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Stage",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "StageDesc": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Stage Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "StartDate": {
+     "type": "cds.Timestamp",
+     "@odata.Type": "Edm.DateTime",
+     "@odata.Precision": 7,
+     "@sap.unicode": "false",
+     "@sap.label": "Start Date",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "EndDate": {
+     "type": "cds.Timestamp",
+     "@odata.Type": "Edm.DateTime",
+     "@odata.Precision": 7,
+     "@sap.unicode": "false",
+     "@sap.label": "End Date",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "Customer": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.unicode": "false",
+     "@sap.label": "Customer ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "CustomerName": {
+     "type": "cds.String",
+     "length": 166,
+     "@sap.unicode": "false",
+     "@sap.label": "Customer Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjManagerId": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Manager ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjManagerName": {
+     "type": "cds.String",
+     "length": 80,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Manager Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjAccountantId": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Accountant ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjAccountantName": {
+     "type": "cds.String",
+     "length": 80,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Accountant Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjControllerId": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Controller ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjControllerName": {
+     "type": "cds.String",
+     "length": 80,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Controller Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjPartnerId": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Partner ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjPartnerName": {
+     "type": "cds.String",
+     "length": 80,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Partner Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "CostCenter": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.unicode": "false",
+     "@sap.label": "Cost Center ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "CostCenterName": {
+     "type": "cds.String",
+     "length": 20,
+     "@sap.unicode": "false",
+     "@sap.label": "Cost Center Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjectCategory": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Type",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "Currency": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.unicode": "false",
+     "@sap.label": "Currency",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.semantics": "currency-code"
+    },
+    "Currencyname": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Currency Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "OrgID": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.unicode": "false",
+     "@sap.label": "Service Organization ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "OrgDesc": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Service Organization Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "Confidential": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Confidential",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "YY1_AktuellePIEProj_Cpr": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.field.control": "YY1_AktuellePIEProj_CprF",
+     "@sap.label": "Aktuelle PIE Unternehmen_prj",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_AktuellePIEProj_CprF": {
+     "type": "cds.Integer",
+     "@odata.Type": "Edm.Byte",
+     "@sap.visible": "false",
+     "@sap.label": "UI Field Control",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.filterable": "false",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_AktuellePIEUntern2_Cpr": {
+     "type": "cds.Boolean",
+     "@sap.field.control": "YY1_AktuellePIEUntern2_CprF",
+     "@sap.filter.restriction": "single-value",
+     "@sap.label": "Aktuelle PIE Unternehmencb_prj",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_AktuellePIEUntern2_CprF": {
+     "type": "cds.Integer",
+     "@odata.Type": "Edm.Byte",
+     "@sap.visible": "false",
+     "@sap.label": "UI Field Control",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.filterable": "false",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_ExcludedFromIL_Cpr": {
+     "type": "cds.Boolean",
+     "@sap.field.control": "YY1_ExcludedFromIL_CprF",
+     "@sap.filter.restriction": "single-value",
+     "@sap.label": "Excluded from ILV",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_ExcludedFromIL_CprF": {
+     "type": "cds.Integer",
+     "@odata.Type": "Edm.Byte",
+     "@sap.visible": "false",
+     "@sap.label": "UI Field Control",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.filterable": "false",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_VIPIndicator_ep1_Cpr": {
+     "type": "cds.Boolean",
+     "@sap.field.control": "YY1_VIPIndicator_ep1_CprF",
+     "@sap.filter.restriction": "single-value",
+     "@sap.label": "VIPIndicator_ep",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_VIPIndicator_ep1_CprF": {
+     "type": "cds.Integer",
+     "@odata.Type": "Edm.Byte",
+     "@sap.visible": "false",
+     "@sap.label": "UI Field Control",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.filterable": "false",
+     "@sap.is.extension.field": "true"
+    },
+    "ProjectRoleSet": {
+     "type": "cds.Association",
+     "target": "SC_EXTERNAL_SERVICES_SRV.ProjectRoleSet",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "WorkpackageSet": {
+     "type": "cds.Association",
+     "target": "SC_EXTERNAL_SERVICES_SRV.WorkpackageSet",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    }
+   }
+  },
+  "SC_EXTERNAL_SERVICES_SRV.WorkpackageSet": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.updatable": "false",
+   "@sap.deletable": "false",
+   "@sap.pageable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Work Packages",
+   "elements": {
+    "WorkPackageID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 50,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "WorkPackageUnitText": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Unit Text",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "WorkPackageType": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Type",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "UnitOfMeasure": {
+     "type": "cds.String",
+     "length": 30,
+     "@sap.unicode": "false",
+     "@sap.label": "Unit Of Measure",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "Quantity": {
+     "type": "cds.String",
+     "length": 15,
+     "@sap.unicode": "false",
+     "@sap.label": "Quantity",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ChangedOn": {
+     "type": "cds.Timestamp",
+     "@odata.Type": "Edm.DateTimeOffset",
+     "@odata.Precision": 7,
+     "@sap.unicode": "false",
+     "@sap.label": "Changed on",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjectID": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ChangedBy": {
+     "type": "cds.String",
+     "length": 12,
+     "@sap.unicode": "false",
+     "@sap.label": "Changed By",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "WorkPackageName": {
+     "type": "cds.String",
+     "length": 60,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "WPStartDate": {
+     "type": "cds.Timestamp",
+     "@odata.Type": "Edm.DateTime",
+     "@odata.Precision": 7,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Start Date",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "WPEndDate": {
+     "type": "cds.Timestamp",
+     "@odata.Type": "Edm.DateTime",
+     "@odata.Precision": 7,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package EndDate",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ProjectName": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "YY1_DMRFlag_cpd": {
+     "type": "cds.Boolean",
+     "@sap.field.control": "YY1_DMRFlag_cpdF",
+     "@sap.filter.restriction": "single-value",
+     "@sap.label": "DMR Flag",
+     "@sap.is.extension.field": "true"
+    },
+    "YY1_DMRFlag_cpdF": {
+     "type": "cds.Integer",
+     "@odata.Type": "Edm.Byte",
+     "@sap.visible": "false",
+     "@sap.label": "UI Field Control",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.filterable": "false",
+     "@sap.is.extension.field": "true"
+    },
+    "WorkPackageFunctionSet": {
+     "type": "cds.Association",
+     "target": "SC_EXTERNAL_SERVICES_SRV.WorkPackageFunctionSet",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "WorkItemSet": {
+     "type": "cds.Association",
+     "target": "SC_EXTERNAL_SERVICES_SRV.WorkItemSet",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    },
+    "PlanDataSet": {
+     "type": "cds.Association",
+     "target": "SC_EXTERNAL_SERVICES_SRV.PlanDataSet",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    }
+   }
+  },
+  "SC_EXTERNAL_SERVICES_SRV.PlanDataSet": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.updatable": "false",
+   "@sap.deletable": "false",
+   "@sap.pageable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Plan Data",
+   "elements": {
+    "ProjectID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "ResType": {
+     "key": true,
+     "type": "cds.String",
+     "length": 4,
+     "@sap.unicode": "false",
+     "@sap.label": "Resource Type ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "WorkPackageID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 50,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "ResourceId": {
+     "key": true,
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Resource ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "Version": {
+     "key": true,
+     "type": "cds.String",
+     "length": 28,
+     "@sap.unicode": "false",
+     "@sap.label": "Version ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "Employee": {
+     "key": true,
+     "type": "cds.String",
+     "length": 8,
+     "@sap.unicode": "false",
+     "@sap.label": "Employee ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "Confirmed": {
+     "key": true,
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Resource is Confirmed",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "WorkitemId": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Item ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "DelvryServOrg": {
+     "key": true,
+     "type": "cds.String",
+     "length": 5,
+     "@sap.unicode": "false",
+     "@sap.label": "Delivery Org. ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "BillingControlCategory": {
+     "type": "cds.String",
+     "length": 60,
+     "@sap.unicode": "false",
+     "@sap.label": "Billing Category",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "notNull": true
+    },
+    "BillingControlCategoryID": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.unicode": "false",
+     "@sap.label": "Billing Category ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "notNull": true
+    },
+    "EmployeeName": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Employee Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "Wpname": {
+     "type": "cds.String",
+     "length": 60,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ResTypeText": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Resource Type Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ResourceText": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Resource Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "Uom": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.unicode": "false",
+     "@sap.label": "Unit of Measure",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.semantics": "unit-of-measure",
+     "notNull": true
+    },
+    "Period": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.unicode": "false",
+     "@sap.label": "Month",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "FcYear": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.unicode": "false",
+     "@sap.label": "Year",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "WorkitemName": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Work Item Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "Effort": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unicode": "false",
+     "@sap.unit": "Uom",
+     "@sap.label": "Planned Effort",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "DelvryServOrgT": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Delivery Org. Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "ToStaffData": {
+     "@sap.label": "Navigate to Staff Data",
+     "type": "cds.Association",
+     "target": "SC_EXTERNAL_SERVICES_SRV.StaffingDataSet",
+     "cardinality": {
+      "max": "*"
+     },
+     "keys": []
+    }
+   }
+  },
+  "SC_EXTERNAL_SERVICES_SRV.WorkItemSet": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.updatable": "false",
+   "@sap.deletable": "false",
+   "@sap.pageable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Work Items",
+   "elements": {
+    "Workitem": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Item ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "WorkpackageID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 50,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "Workitemname": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Item Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "Workitemisinactive": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Item is Inactive",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    }
+   }
+  },
+  "SC_EXTERNAL_SERVICES_SRV.ProjectRoleSet": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.updatable": "false",
+   "@sap.deletable": "false",
+   "@sap.pageable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Project Roles",
+   "elements": {
+    "ProjectID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "ProjectRoleID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 15,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Role ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "notNull": true
+    },
+    "ProjectRoleName": {
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project Role Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    },
+    "BusinessPartnerID": {
+     "type": "cds.String",
+     "length": 10,
+     "@sap.unicode": "false",
+     "@sap.label": "Business Partner ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "notNull": true
+    },
+    "BusinessPartnerName": {
+     "type": "cds.String",
+     "length": 80,
+     "@sap.unicode": "false",
+     "@sap.label": "Business Partner Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false"
+    }
+   }
+  },
+  "SC_EXTERNAL_SERVICES_SRV.StaffingDataSet": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.updatable": "false",
+   "@sap.deletable": "false",
+   "@sap.pageable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Staffing Data",
+   "elements": {
+    "ProjectID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "WorkPackageID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 50,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ResType": {
+     "key": true,
+     "type": "cds.String",
+     "length": 4,
+     "@sap.unicode": "false",
+     "@sap.label": "ResourceTypeID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ResourceId": {
+     "key": true,
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Resource ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "WorkitemId": {
+     "key": true,
+     "type": "cds.String",
+     "length": 10,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Item ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "BillingControlCategory": {
+     "type": "cds.String",
+     "length": 60,
+     "@sap.unicode": "false",
+     "@sap.label": "Billing Control Category Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "WPname": {
+     "type": "cds.String",
+     "length": 60,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ResTypeText": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Resource Type Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "ResourceText": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Resource Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "Uom": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.unicode": "false",
+     "@sap.label": "Unit of Measure",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "@sap.semantics": "unit-of-measure",
+     "notNull": true
+    },
+    "Version": {
+     "type": "cds.String",
+     "length": 28,
+     "@sap.unicode": "false",
+     "@sap.label": "Plan Version ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "Period": {
+     "type": "cds.String",
+     "length": 3,
+     "@sap.unicode": "false",
+     "@sap.label": "Month",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "FcYear": {
+     "type": "cds.String",
+     "length": 4,
+     "@sap.unicode": "false",
+     "@sap.label": "Fiscal Year",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "StaffedEmployee": {
+     "type": "cds.String",
+     "length": 8,
+     "@sap.unicode": "false",
+     "@sap.label": "Staffed Employee ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "Confirmed": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Resource is Confirmed",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "WorkitemName": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Work Item Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "StaffedEffort": {
+     "type": "cds.Decimal",
+     "precision": 15,
+     "scale": 3,
+     "@sap.unicode": "false",
+     "@sap.unit": "Uom",
+     "@sap.label": "Staffed Efforts",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "StaffedEmpDelvryServOrg": {
+     "type": "cds.String",
+     "length": 5,
+     "@sap.unicode": "false",
+     "@sap.label": "Service Org.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "StaffedEmpDelvryServOrgT": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Delivery Org. Desc.",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "StaffedEmployeeName": {
+     "type": "cds.String",
+     "@sap.unicode": "false",
+     "@sap.label": "Staffed Employee Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    }
+   }
+  },
+  "SC_EXTERNAL_SERVICES_SRV.WorkPackageFunctionSet": {
+   "kind": "entity",
+   "@cds.external": true,
+   "@cds.persistence.skip": true,
+   "@sap.creatable": "false",
+   "@sap.updatable": "false",
+   "@sap.deletable": "false",
+   "@sap.pageable": "false",
+   "@sap.content.version": "1",
+   "@sap.label": "Work Package Functions",
+   "elements": {
+    "ProjectID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 40,
+     "@sap.unicode": "false",
+     "@sap.label": "Project ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "WorkPackageID": {
+     "key": true,
+     "type": "cds.String",
+     "length": 50,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "WorkPackageFunctionId": {
+     "key": true,
+     "type": "cds.String",
+     "length": 4,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Function ID",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "notNull": true
+    },
+    "WorkPackageFunctionName": {
+     "type": "cds.String",
+     "length": 60,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Function Name",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    },
+    "WorkPackageFunctionIsBlocked": {
+     "type": "cds.String",
+     "length": 1,
+     "@sap.unicode": "false",
+     "@sap.label": "Work Package Function Is Blocked",
+     "@sap.creatable": "false",
+     "@sap.updatable": "false",
+     "@sap.sortable": "false",
+     "@sap.filterable": "false",
+     "notNull": true
+    }
+   }
+  }
+ }
+}

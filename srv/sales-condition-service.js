@@ -2,6 +2,8 @@ const cds = require('@sap/cds');
 const { getWorkAgreement, getWorkAgreements, getWorkerIdsByAgreements } = require('./lib/worker-mapping');
 const { getConditionRecords } = require('./lib/condition-record');
 const { getEmployeeDetails } = require('./lib/employee-lookup');
+const { getProjectCustomers } = require('./lib/project-lookup');
+const { getBusinessPartnerDetails } = require('./lib/business-partner-lookup');
 
 module.exports = class SalesConditionService extends cds.ApplicationService {
   init() {
@@ -144,26 +146,54 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
       const workAgreementIds = mappings.map(m => m.workAgreementId);
       const records = await getConditionRecords({ workAgreementIds });
 
+      // Enrich: project-level conditions → look up Customer from ProjectSet
+      const projectIds = [...new Set(
+        records.filter(r => r.PriceLevel === 'Project' && r.EngagementProject)
+               .map(r => r.EngagementProject)
+      )];
+      const projectCustomerMap = projectIds.length
+        ? await getProjectCustomers(projectIds)
+        : new Map();
+
+      // Populate Customer on project-level records that don't have one
+      for (const r of records) {
+        if (r.PriceLevel === 'Project' && r.EngagementProject && !r.Customer) {
+          r.Customer = projectCustomerMap.get(r.EngagementProject) || '';
+        }
+      }
+
+      // Collect all unique Customer IDs for business partner lookup
+      const allCustomerIds = [...new Set(
+        records.filter(r => r.Customer).map(r => r.Customer)
+      )];
+      const bpMap = allCustomerIds.length
+        ? await getBusinessPartnerDetails(allCustomerIds)
+        : new Map();
+
       return records
-        .map(r => ({
-          WorkerId: workerId,
-          ConditionRecord: r.ConditionRecord,
-          ConditionValidityEndDate: r.ConditionValidityEndDate,
-          ConditionType: r.ConditionType,
-          ConditionTable: r.ConditionTable,
-          ConditionValidityStartDate: r.ConditionValidityStartDate,
-          ConditionRateValue: r.ConditionRateValue,
-          ConditionRateValueUnit: r.ConditionRateValueUnit,
-          ConditionQuantityUnit: r.ConditionQuantityUnit,
-          ConditionCurrency: r.ConditionCurrency,
-          Personnel: r.Personnel,
-          Customer: r.Customer,
-          EngagementProject: r.EngagementProject,
-          Mandantengruppe: r.Mandantengruppe,
-          PriceLevel: r.PriceLevel,
-          PriceLevelOrder: r.PriceLevelOrder,
-          ID: _derivePriceLevelId(r),
-        }))
+        .map(r => {
+          const bp = bpMap.get(r.Customer);
+          return {
+            WorkerId: workerId,
+            ConditionRecord: r.ConditionRecord,
+            ConditionValidityEndDate: r.ConditionValidityEndDate,
+            ConditionType: r.ConditionType,
+            ConditionTable: r.ConditionTable,
+            ConditionValidityStartDate: r.ConditionValidityStartDate,
+            ConditionRateValue: r.ConditionRateValue,
+            ConditionRateValueUnit: r.ConditionRateValueUnit,
+            ConditionQuantityUnit: r.ConditionQuantityUnit,
+            ConditionCurrency: r.ConditionCurrency,
+            Personnel: r.Personnel,
+            Customer: r.Customer,
+            EngagementProject: r.EngagementProject,
+            Mandantengruppe: r.Mandantengruppe || (bp ? bp.mandantengruppe : ''),
+            CustomerName: bp ? bp.name : '',
+            PriceLevel: r.PriceLevel,
+            PriceLevelOrder: r.PriceLevelOrder,
+            ID: _derivePriceLevelId(r),
+          };
+        })
         .sort((a, b) => a.PriceLevelOrder - b.PriceLevelOrder);
     });
 

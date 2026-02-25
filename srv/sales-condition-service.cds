@@ -31,6 +31,7 @@ service SalesConditionService {
         Customer                   : String;
         EngagementProject          : String;
         Mandantengruppe            : String;
+        CustomerName               : String;
         PriceLevel                 : String;
         PriceLevelOrder            : Integer;
         ID                         : String;

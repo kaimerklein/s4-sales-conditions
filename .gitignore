@@ -152,5 +152,5 @@ connection.properties
 *.sqlite
 db.sql*
 
-.cdsrc*.json
+!.cdsrc*-template.json
 

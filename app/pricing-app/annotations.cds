@@ -74,6 +74,7 @@ annotate service.EmployeeConditions with @(
         { $Type : 'UI.DataField', Value : ID,                          Label : 'ID' },
         { $Type : 'UI.DataField', Value : EngagementProject,           Label : 'Project ID' },
         { $Type : 'UI.DataField', Value : Customer,                    Label : 'Customer' },
+        { $Type : 'UI.DataField', Value : CustomerName,                Label : 'Customer Name' },
         { $Type : 'UI.DataField', Value : Mandantengruppe,             Label : 'Mandantengruppe' },
         { $Type : 'UI.DataField', Value : ConditionCurrency,           Label : 'Currency' },
         { $Type : 'UI.DataField', Value : ConditionQuantityUnit,       Label : 'Quantity Unit' }
@@ -96,6 +97,7 @@ annotate service.EmployeeConditions with {
     EngagementProject          @title : 'Project ID';
     Mandantengruppe            @title : 'Mandantengruppe';
     PriceLevel                 @title : 'Price Level';
+    CustomerName               @title : 'Customer Name';
     PriceLevelOrder            @title : 'Price Level Order';
     ID                         @title : 'ID';
 };
