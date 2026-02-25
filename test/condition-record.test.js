@@ -72,6 +72,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PCP0',
     ConditionRateValue: 100.0,
     ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
   },
   {
@@ -81,6 +82,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PCP0',
     ConditionRateValue: 200.0,
     ConditionRateValueUnit: 'USD',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'USD',
   },
   {
@@ -90,6 +92,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PSP0',
     ConditionRateValue: 150.0,
     ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
   },
   {
@@ -99,6 +102,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PR00',
     ConditionRateValue: 50.0,
     ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
   },
   {
@@ -108,6 +112,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PSP0',
     ConditionRateValue: 120.0,
     ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
   },
   {
@@ -117,6 +122,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PSP0',
     ConditionRateValue: 110.0,
     ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
   },
 ];

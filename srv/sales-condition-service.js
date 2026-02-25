@@ -154,6 +154,7 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
           ConditionValidityStartDate: r.ConditionValidityStartDate,
           ConditionRateValue: r.ConditionRateValue,
           ConditionRateValueUnit: r.ConditionRateValueUnit,
+          ConditionQuantityUnit: r.ConditionQuantityUnit,
           ConditionCurrency: r.ConditionCurrency,
           Personnel: r.Personnel,
           Customer: r.Customer,
@@ -161,6 +162,7 @@ module.exports = class SalesConditionService extends cds.ApplicationService {
           Mandantengruppe: r.Mandantengruppe,
           PriceLevel: r.PriceLevel,
           PriceLevelOrder: r.PriceLevelOrder,
+          ID: _derivePriceLevelId(r),
         }))
         .sort((a, b) => a.PriceLevelOrder - b.PriceLevelOrder);
     });
@@ -223,5 +225,19 @@ function _walkWhere(where, filters) {
     }
 
     i++;
+  }
+}
+
+/**
+ * Derive the ID column value based on price level.
+ * Shows the identifying value for each level:
+ * Project → EngagementProject, Customer → Customer, Mandantengruppe → Mandantengruppe
+ */
+function _derivePriceLevelId(r) {
+  switch (r.PriceLevel) {
+    case 'Project':        return r.EngagementProject || '';
+    case 'Customer':       return r.Customer || '';
+    case 'Mandantengruppe': return r.Mandantengruppe || '';
+    default:               return '';
   }
 }

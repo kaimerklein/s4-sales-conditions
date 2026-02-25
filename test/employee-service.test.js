@@ -41,6 +41,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PCP0',
     ConditionRateValue: 100.0,
     ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
   },
   {
@@ -50,6 +51,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PCP0',
     ConditionRateValue: 200.0,
     ConditionRateValueUnit: 'USD',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'USD',
   },
   {
@@ -59,6 +61,7 @@ const MOCK_CONDITION_RECORDS = [
     ConditionType: 'PSP0',
     ConditionRateValue: 150.0,
     ConditionRateValueUnit: 'EUR',
+    ConditionQuantityUnit: 'H',
     ConditionCurrency: 'EUR',
   },
 ];
@@ -201,6 +204,22 @@ describe('SalesConditionService — Employees', () => {
       "/odata/v4/sales-condition/Employees?$filter=WorkerId eq '99999'"
     );
     expect(data.value).toEqual([]);
+  });
+
+  it('returns single employee by key (object page navigation)', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/Employees(WorkerId='10001')"
+    );
+    expect(data.WorkerId).toBe('10001');
+    expect(data.EmployeeName).toBe('Max Mustermann');
+  });
+
+  it('returns conditions via composition navigation path', async () => {
+    const { data } = await test.axios.get(
+      "/odata/v4/sales-condition/Employees(WorkerId='10001')/Conditions"
+    );
+    expect(data.value.length).toBe(2);
+    expect(data.value[0].WorkerId).toBe('10001');
   });
 });
 

@@ -87,6 +87,7 @@ async function getConditionRecords({ workAgreementIds, customers, engagementProj
       ConditionValidityEndDate: v.ConditionValidityEndDate,
       ConditionRateValue: rec.ConditionRateValue ?? null,
       ConditionRateValueUnit: rec.ConditionRateValueUnit || '',
+      ConditionQuantityUnit: rec.ConditionQuantityUnit || '',
       ConditionCurrency: rec.ConditionCurrency || '',
       Personnel: v.Personnel,
       Customer: cust,

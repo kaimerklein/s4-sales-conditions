@@ -25,6 +25,7 @@ service SalesConditionService {
         ConditionValidityStartDate : Date;
         ConditionRateValue         : Decimal;
         ConditionRateValueUnit     : String;
+        ConditionQuantityUnit      : String;
         ConditionCurrency          : String;
         Personnel                  : String;
         Customer                   : String;
@@ -32,5 +33,6 @@ service SalesConditionService {
         Mandantengruppe            : String;
         PriceLevel                 : String;
         PriceLevelOrder            : Integer;
+        ID                         : String;
   }
 }
