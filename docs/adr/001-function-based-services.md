@@ -2,7 +2,9 @@
 
 ## Status
 
-Accepted
+~~Accepted~~ **Deprecated** — superseded by [ADR-005](005-entity-based-readonly-services.md)
+
+> **Note:** After integrating Fiori Elements, the function-based approach turned out to be a poor fit. The predicted consequence ("Fiori Elements list reports require slightly more configuration") proved to be a blocking limitation: Fiori Elements List Report and Object Page pages require entity sets to support OData query semantics (`$filter`, `$orderby`, navigation properties). The consequence about `$filter`/`$orderby` not being available on function imports was also confirmed in practice. `SalesConditionService` was refactored to `@readonly entity` definitions with custom `READ` handlers (see ADR-005). `WorkerMappingService` retains the function-based pattern because it is an internal utility service not consumed by Fiori Elements.
 
 ## Context
 

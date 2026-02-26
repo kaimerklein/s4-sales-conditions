@@ -6,7 +6,15 @@ Accepted
 
 ## Context
 
-During local development, the application needs credentials (URL, username, password) for two external S/4 HANA OData services. The conventional CAP approach uses environment variables with the pattern `cds_requires_<service>_credentials_<key>`, but CDS parses underscores as nested-key separators. This breaks for service names like `API_SLSPRICINGCONDITIONRECORD_SRV` and `YY1_RSM_WORKAGRMNT_VAL_IE_CDS` — CDS interprets `API`, `SLSPRICINGCONDITIONRECORD`, and `SRV` as separate nesting levels instead of a single service name.
+During local development, the application needs credentials (URL, username, password) for five external OData services:
+
+- `API_SLSPRICINGCONDITIONRECORD_SRV` — condition records
+- `YY1_RSM_WORKAGRMNT_VAL_IE_CDS` — worker ↔ work agreement mapping
+- `YY1_TT_PERSONWORKAGREEMENT_CDS` — employee name and cost center
+- `SC_EXTERNAL_SERVICES_SRV` — project → customer mapping
+- `API_BUSINESS_PARTNER` — customer name and Mandantengruppe
+
+The conventional CAP approach uses environment variables with the pattern `cds_requires_<service>_credentials_<key>`, but CDS parses underscores as nested-key separators. This breaks for service names like `API_SLSPRICINGCONDITIONRECORD_SRV` and `YY1_RSM_WORKAGRMNT_VAL_IE_CDS` — CDS interprets `API`, `SLSPRICINGCONDITIONRECORD`, and `SRV` as separate nesting levels instead of a single service name.
 
 The `--profile hybrid` flag was previously used with `.env`, but the underscore ambiguity made this approach unreliable.
 
