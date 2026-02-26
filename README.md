@@ -55,9 +55,13 @@ cf deploy mta_archives/s4-sales-conditions_1.0.0.mtar
 
 Architecture Decision Records are maintained in [`docs/adr/`](docs/adr/).
 
-| ADR | Title |
-|-----|-------|
-| [001](docs/adr/001-function-based-services.md) | Function-based services over entity CRUD |
-| [002](docs/adr/002-three-tier-service-layering.md) | Three-tier service layering |
-| [003](docs/adr/003-credentials-via-cdsrc-private.md) | Credentials via .cdsrc-private.json |
-| [004](docs/adr/004-mock-external-services-in-tests.md) | Mock external services via cds.connect.to spy |
+| ADR | Status | Title |
+|-----|--------|-------|
+| [001](docs/adr/001-function-based-services.md) | Deprecated | Function-based services over entity CRUD |
+| [002](docs/adr/002-three-tier-service-layering.md) | Accepted | Three-tier service layering |
+| [003](docs/adr/003-credentials-via-cdsrc-private.md) | Accepted | Credentials via .cdsrc-private.json |
+| [004](docs/adr/004-mock-external-services-in-tests.md) | Accepted | Mock external services via cds.connect.to spy |
+| [005](docs/adr/005-entity-based-readonly-services.md) | Accepted | Entity-based read-only services with custom READ handlers |
+| [006](docs/adr/006-employee-centric-hierarchical-data-model.md) | Accepted | Employee-centric hierarchical data model |
+| [007](docs/adr/007-two-query-pattern-for-odata-v2-conditions.md) | Accepted | Two-query pattern for OData V2 condition records |
+| [008](docs/adr/008-multi-service-enrichment-pipeline.md) | Accepted | Multi-service enrichment pipeline for condition details |
